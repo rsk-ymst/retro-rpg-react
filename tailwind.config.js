@@ -7,6 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      flexGrow: {
+        0.8: '0.8',
+        2: '2'
+      },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic':
