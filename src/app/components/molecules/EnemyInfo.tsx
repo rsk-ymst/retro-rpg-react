@@ -15,11 +15,12 @@ export type Option = {
   onClick: () => void
 }
 
-const EnemyInfo = ({ className, enemyName, enemyNumber }: Props) => {
+const EnemyInfo = ({ className, enemyName, enemyNumber, isFocus }: Props) => {
   return (
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
-        <Button className={'text-start'} display={'バグA'}/>
+        <Button className={'text-start'} display={'バグA'} />
+        {isFocus && <div>Focused!!</div>}
         {/* {options.map((option, key) => (
           // <div key={key}>
           <Button key={key} className={'text-start'} display={option.display_name} onClick={option.onClick} />
