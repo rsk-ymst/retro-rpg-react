@@ -8,7 +8,7 @@ export type Props = {
 const BattleField = ({className}: Props) => {
   return (
     <div className={`bg-gray-700 ${className}`}>
-
+      
     </div>
   )
 }

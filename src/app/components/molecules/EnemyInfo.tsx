@@ -5,7 +5,9 @@ import Button from '../atoms/Button'
 
 export type Props = {
   className?: string
-  options: Option[]
+  enemyName?: string
+  enemyNumber?: Option[]
+  isFocus?: boolean
 }
 
 export type Option = {
@@ -13,18 +15,19 @@ export type Option = {
   onClick: () => void
 }
 
-const BasicOptions = ({ options, className }: Props) => {
+const EnemyInfo = ({ className, enemyName, enemyNumber }: Props) => {
   return (
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
-        {options.map((option, key) => (
+        <Button className={'text-start'} display={'バグA'}/>
+        {/* {options.map((option, key) => (
           // <div key={key}>
           <Button key={key} className={'text-start'} display={option.display_name} onClick={option.onClick} />
           // </div>
-        ))}
+        ))} */}
       </div>
     </div>
   )
 }
 
-export default BasicOptions
+export default EnemyInfo

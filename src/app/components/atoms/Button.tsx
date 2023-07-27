@@ -1,18 +1,22 @@
-import React from 'react';
+'use client'
+
+import React from 'react'
 
 type Props = {
   className: string
-  onClick: () => void;
+  onClick?: () => void
+  display: string
 }
 
-const Button = ({ onClick, className}: Props) => {
+const Button = ({ onClick, className, display }: Props) => {
   return (
     <button
       onClick={onClick}
-      className={className}
+      className={`${className}`}
     >
+      {display}
     </button>
-  );
-};
+  )
+}
 
-export default Button;
+export default Button
