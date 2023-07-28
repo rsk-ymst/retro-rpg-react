@@ -1,42 +1,51 @@
 'use client'
 
 import { useContext, useState } from 'react'
-import BasicOptions, { Option } from '../molecules/BasicOptions'
+import BasicOptions, { charactorOption } from '../molecules/BasicOptions'
 import EnemyInfo from '../molecules/EnemyInfo'
-import { GameContext } from '@/app/buttle/page'
+import { GameContext, Context, UIFocusStatus } from '@/app/buttle/context'
 
 export type Props = {
   className: string
 }
 
-const hoge: Option = {
-  display_name: 'たたかう',
+const hoge: charactorOption = {
+  commandName: 'たたかう',
   onClick: () => {
     return
   },
 }
 
-const basic_options: Option[] = [
+const basicOptions: charactorOption[] = [
   {
-    display_name: 'たたかう',
+    commandName: 'たたかう',
     onClick: () => {
       return
     },
   },
   {
-    display_name: 'わざ',
+    commandName: 'スキル',
     onClick: () => {
       return
     },
   },
   {
-    display_name: 'どうぐ',
+    commandName: 'どうぐ',
     onClick: () => {
       return
     },
   },
   {
-    display_name: 'にげる',
+    commandName: 'にげる',
+    onClick: () => {
+      return
+    },
+  },
+]
+
+const enemyOptions: Object[] = [
+  {
+    enemyName: 'バグA',
     onClick: () => {
       return
     },
@@ -44,14 +53,15 @@ const basic_options: Option[] = [
 ]
 
 const CommandMenu = ({ className }: Props) => {
-  const sharedData = useContext(GameContext);
-  console.log(sharedData.focus);
+  const context = useContext(Context)
 
-  const [enemyInfoFocus, setEnemyInfoFocus] = useState(false)
+  // console.log(context.)
 
-  basic_options[0].onClick = () => {
-    setEnemyInfoFocus(true)
-    sharedData.focus.enemyInfoFocus = true
+  // const [enemyInfoFocus, setEnemyInfoFocus] = useState(false)
+
+  basicOptions[0].onClick = () => {
+    context?.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
+    context?.updateActionCommand({ ...context.actionCommand, command: 'たたかう' })
   }
 
   return (
@@ -59,14 +69,14 @@ const CommandMenu = ({ className }: Props) => {
     <div className={`flex bg-blue-600 rounded-lg border-2 border-t-red-50 ${className}`}>
       {/* <div className='flex'> */}
       {/* <div className='flex-[0.8] h-full border-2 border-t-red-50'> */}
-      <BasicOptions className='flex-[0.8] h-full' options={basic_options} />
+      <BasicOptions className='flex-[0.8] h-full' options={basicOptions} />
       {/* <div>たたかう</div>
                   <div>にげる</div>
                   <div>どうぐ</div>
                   <div>助ける</div> */}
       {/* </div> */}
 
-      <EnemyInfo className='flex-1 h-full border-x-2' isFocus={sharedData.focus.enemyInfoFocus} />
+      <EnemyInfo className='flex-1 h-full border-x-2' UIFocus={context?.UIFocus} />
 
       {/*
       <div >

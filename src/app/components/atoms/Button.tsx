@@ -13,6 +13,7 @@ const Button = ({ onClick, className, display }: Props) => {
     <button
       onClick={onClick}
       className={`${className}`}
+      // disabled
     >
       {display}
     </button>
