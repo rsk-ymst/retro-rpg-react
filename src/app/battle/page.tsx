@@ -15,7 +15,7 @@ import {
   UIFocusStatus,
 } from './context'
 
-const CHARACTOR_NUMBER = 4
+const CHARACTER_NUMBER = 4
 
 const GameWindow = () => {
   const [currentCharacterIndex, setCurrentCharacterIndex] = useState<number>(0)
@@ -31,7 +31,7 @@ const GameWindow = () => {
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
 
-  // ここでbattelStateを変更する
+  // ここでbattleStateを変更する
   useEffect(() => {
     console.log('update battleState', battleState)
 
@@ -69,7 +69,7 @@ const GameWindow = () => {
       actionCommandQueue.push(actionCommand)
       console.log('pushed actionCommand', actionCommandQueue)
 
-      // キャラクタ全員のコマンドが決定したら
+      // キャラクタ全員のコマンドが決定したら、stateを切り替える
       if (actionCommandQueue.length >= 4) {
         setBattleState(BattleState.ActionTransaction)
         return
@@ -116,7 +116,7 @@ const GameWindow = () => {
 
             {/* バトルフィールド */}
             {/* <div className='flex justify-center'> */}
-            <BattleField className={'w-[920px] h-[320px]'} />
+            <BattleField className={'w-[920px] h-[350px]'} />
             {/* <div className='bg-gray-700 w-[920px] h-[320px]'>
         {/* enemy filed */}
             {/* nakama filed */}
@@ -124,7 +124,7 @@ const GameWindow = () => {
             {/* </div> */}
 
             {/* コマンドメニュー */}
-            <CommandMenu className={'w-[920px] h-[150px] mb-2'} />
+            <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
             {/* <div className='flex justify-center m-8'> */}
             {/* <div className='flex bg-blue-600 w-[920px] h-[150px] mb-2 rounded-lg border-2 border-t-red-50'> */}
             {/* <div className='flex'> */}

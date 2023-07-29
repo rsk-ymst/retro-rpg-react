@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, UIFocusStatus } from '@/app/buttle/context'
+import { Context, UIFocusStatus } from '@/app/battle/context'
 
 export type Props = {
   className?: string

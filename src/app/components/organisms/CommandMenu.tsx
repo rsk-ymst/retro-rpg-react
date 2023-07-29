@@ -1,22 +1,15 @@
 'use client'
 
 import { useContext, useState } from 'react'
-import BasicOptions, { charactorOption } from '../molecules/BasicOptions'
+import BasicOptions, { characterOption } from '../molecules/BasicOptions'
 import EnemyInfo from '../molecules/EnemyInfo'
-import { GameContext, Context, UIFocusStatus } from '@/app/buttle/context'
+import { GameContext, Context, UIFocusStatus } from '@/app/battle/context'
 
 export type Props = {
   className: string
 }
 
-const hoge: charactorOption = {
-  commandName: 'たたかう',
-  onClick: () => {
-    return
-  },
-}
-
-const basicOptions: charactorOption[] = [
+const basicOptions: characterOption[] = [
   {
     commandName: 'たたかう',
     onClick: () => {
