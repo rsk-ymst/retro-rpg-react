@@ -3,6 +3,7 @@
 import { useContext, useState } from 'react'
 import BasicOptions, { characterOption } from '../molecules/BasicOptions'
 import EnemyInfo from '../molecules/EnemyInfo'
+import UserInfo from '../molecules/UserInfo'
 import { GameContext, Context, UIFocusStatus } from '@/app/battle/context'
 
 export type Props = {
@@ -79,12 +80,8 @@ const CommandMenu = ({ className }: Props) => {
                   <div>助ける</div> */}
       {/* </div> */}
 
-      <div className='flex-[2] h-full border-t-red-50'>
-        {/* <div>たたかう</div>
-                  <div>にげる</div>
-                  <div>どうぐ</div>
-                  <div>助ける</div> */}
-      </div>
+      <UserInfo className='flex-[2] h-full border-t-red-50'></UserInfo>
+
       {/* </div> */}
     </div>
     // </div>

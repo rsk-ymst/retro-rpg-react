@@ -18,7 +18,7 @@ const BasicOptions = ({ options, className }: Props) => {
   const context = useContext(Context)
 
   const characterOptions = [options, options, options, options]
-  const charactersIdx = context?.currentCharacterIndex || 0
+  const charactersIdx = context?.currentFieldPlayerIndex || 0
 
   return (
     <div className={`${className}`}>

@@ -10,6 +10,7 @@ import {
   ActionCommandQueue,
   BattleState,
   Context,
+  FieldPlayer,
   FocusPlayer,
   GameContext,
   UIFocusStatus,
@@ -18,9 +19,14 @@ import {
 const CHARACTER_NUMBER = 4
 
 const GameWindow = () => {
-  const [currentCharacterIndex, setCurrentCharacterIndex] = useState<number>(0)
+  // データ受信し、ここで初期値設定
+
+  const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
+  const [currentFieldPlayers, setCurrentFieldPlayers] = useState<FieldPlayer[]>([])
+
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
+
   const [battleState, setBattleState] = useState<BattleState>(BattleState.PlayerSelect)
   const [focusPlayer, setFocusPlayer] = useState<FocusPlayer>(FocusPlayer.A)
   const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
@@ -43,7 +49,7 @@ const GameWindow = () => {
       //   .then(() => {})
     }
 
-    setCurrentCharacterIndex(0)
+    setCurrentFieldPlayerIndex(0)
     setActionCommandQueue([])
   }, [battleState])
 
@@ -52,12 +58,12 @@ const GameWindow = () => {
   }, [UIFocus])
 
   useEffect(() => {
-    console.log('update currentCharacterIndex', currentCharacterIndex)
+    console.log('update currentFieldPlayerIndex', currentFieldPlayerIndex)
 
-    // if (currentCharacterIndex > 4 || actionCommandQueue.length == 4) {
+    // if (currentFieldPlayerIndex > 4 || actionCommandQueue.length == 4) {
     //   setBattleState(BattleState.ActionTransaction)
     // }
-  }, [currentCharacterIndex])
+  }, [currentFieldPlayerIndex])
 
   useEffect(() => {
     if (actionCommand == null) return
@@ -75,7 +81,7 @@ const GameWindow = () => {
         return
       }
 
-      setCurrentCharacterIndex(currentCharacterIndex + 1)
+      setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
       setActionCommand(null) // コマンド内容を
     }
   }, [actionCommand])
@@ -92,11 +98,12 @@ const GameWindow = () => {
   // }, [])
 
   const initialContext: GameContext = {
-    currentCharacterIndex: 0,
+    currentFieldPlayerIndex: 0,
+    fieldPlayers: [],
     actionCommand,
     battleState,
     UIFocus,
-    actionQueue: [],
+    actionCommandQueue: [],
     updateBattleState,
     updateUIFocusStatus,
     updateActionCommand,
