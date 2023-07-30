@@ -19,7 +19,7 @@ export type Option = {
 const EnemyInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
   const context = useContext(Context)
 
-  const onClick = () => context?.updateActionCommand({ ...context.actionCommand, target: 'バグA' })
+  const onClick = () => context?.updateActionCommand({ ...context.actionCommand, targetId: 0 })
 
   return (
     <div className={`${className}`}>

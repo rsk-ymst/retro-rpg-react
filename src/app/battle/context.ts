@@ -24,7 +24,7 @@ export type ActionCommandQueue = ActionCommand[]
 export type ActionCommand = {
   executer?: string // どのプレイヤーの操作か
   command?: string // どのコマンドを実行するのか
-  target?: string // コマンドの実行対象は何か（敵, 見方）
+  targetId?: number // コマンドの実行対象は何か（敵, 見方）
   content?: string // スキルや道具を用いる場合、その内容は何か
 } | null
 
@@ -34,6 +34,12 @@ export type FieldPlayer = {
   status: FieldPlayerStatus
   parameter: FieldPlayerParameter
 } | null
+
+export type Enemy = {
+  name: string
+  status: EnemyStatus
+  parameter: EnemyParameter
+}
 
 // string部分はのちに型変更
 export type FieldPlayerStatus = {
@@ -46,7 +52,24 @@ export type FieldPlayerStatus = {
 } | null
 
 // string部分はのちに型変更
+export type EnemyStatus = {
+  currentHitPoint: number
+  maxHitPoint: number //
+  currentMagicPoint: number // どのコマンドを実行するのか
+  maxMagicPoint: number // どのコマンドを実行するのか
+  condition: string
+  command: string
+}
+
+// string部分はのちに型変更
 export type FieldPlayerParameter = {
+  attack: number
+  vitality: number
+  defense: number
+  intelligence: number
+} | null
+
+export type EnemyParameter = {
   attack: number
   vitality: number
   defense: number
@@ -71,3 +94,43 @@ export enum UIFocusStatus {
   ENEMY_INFO,
   ITEM_LIST,
 }
+
+export const testPlayer: FieldPlayer = {
+  name: 'フェリス',
+  status: {
+    currentHitPoint: 300,
+    maxHitPoint: 480,
+    currentMagicPoint: 300,
+    maxMagicPoint: 500,
+    condition: 'normal',
+    command: 'たたかう',
+  },
+  parameter: {
+    attack: 100,
+    vitality: 100,
+    defense: 100,
+    intelligence: 100,
+  },
+}
+
+export const testPlayerData: FieldPlayer[] = [testPlayer, testPlayer, testPlayer, testPlayer]
+
+export const testEnemy: Enemy = {
+  name: 'バグA',
+  status: {
+    currentHitPoint: 300,
+    maxHitPoint: 1200,
+    currentMagicPoint: 300,
+    maxMagicPoint: 500,
+    condition: 'normal',
+    command: 'たたかう',
+  },
+  parameter: {
+    attack: 100,
+    vitality: 100,
+    defense: 100,
+    intelligence: 100,
+  },
+}
+
+export const testEnemyData: Enemy[] = [testEnemy]

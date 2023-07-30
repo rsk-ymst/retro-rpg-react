@@ -10,10 +10,13 @@ import {
   ActionCommandQueue,
   BattleState,
   Context,
+  Enemy,
   FieldPlayer,
   FocusPlayer,
   GameContext,
   UIFocusStatus,
+  testEnemyData,
+  testPlayerData,
 } from './context'
 
 const FIELD_PLAYER_NUMBER = 4
@@ -22,7 +25,10 @@ const GameWindow = () => {
   // データ受信し、ここで初期値設定
 
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
-  const [currentFieldPlayers, setCurrentFieldPlayers] = useState<FieldPlayer[]>([])
+  const [FieldPlayers, setFieldPlayers] = useState<FieldPlayer[]>(testPlayerData)
+
+  const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(0)
+  const [enemies, setEnemies] = useState<Enemy[]>(testEnemyData)
 
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
@@ -42,12 +48,46 @@ const GameWindow = () => {
     console.log('update battleState', battleState)
 
     if (battleState == BattleState.ActionTransaction) {
-      // コマンドプッシュ & 待機を繰り返す
-      // // await wait
-      // Promise.resolve()
-      //   .then(() => {})
-      //   .then(() => {})
+      const execTransaction = async () => {
+        for (let index = 0; index < FIELD_PLAYER_NUMBER; index++) {
+          setCurrentFieldPlayerIndex(index)
+
+          const command = actionCommandQueue.pop()
+          enemies[command?.targetId || 0].status.currentHitPoint -= 100
+          console.log('enemyに100ダメージ!', enemies[command?.targetId || 0].status)
+
+          await sleep(2000)
+        }
+      }
+
+      // setCurrentFieldPlayerIndex(1)
+      // const command2 = actionCommandQueue.pop()
+      // enemies[command2?.targetId || 0].status.currentHitPoint -= 100
+      // console.log('enemyに100ダメージ!', enemies[command?.targetId || 0].status)
+
+      // await sleep(ms)
+      // console.log(`${ms}ミリ秒待機しました。${currentFieldPlayerIndex}`)
+
+      // setCurrentFieldPlayerIndex(2)
+      // const command3 = actionCommandQueue.pop()
+      // enemies[command2?.targetId || 0].status.currentHitPoint -= 100
+      // console.log('enemyに100ダメージ!', enemies[command?.targetId || 0].status)
+
+      // await sleep(ms)
+      // console.log(`${ms}ミリ秒待機しました。${currentFieldPlayerIndex}`)
+
+      // setCurrentFieldPlayerIndex(3)
+      // const command4 = actionCommandQueue.pop()
+      // enemies[command2?.targetId || 0].status.currentHitPoint -= 100
+      // console.log('enemyに100ダメージ!', enemies[command?.targetId || 0].status)
+      execTransaction()
     }
+
+    // コマンドプッシュ & 待機を繰り返す
+    // // await wait
+    // Promise.resolve()
+    //   .then(() => {})
+    //   .then(() => {})
 
     setCurrentFieldPlayerIndex(0)
     setActionCommandQueue([])
@@ -58,11 +98,10 @@ const GameWindow = () => {
   }, [UIFocus])
 
   useEffect(() => {
+    if (currentFieldPlayerIndex == 4) {
+      setCurrentFieldPlayerIndex(0)
+    }
     console.log('update currentFieldPlayerIndex', currentFieldPlayerIndex)
-
-    // if (currentFieldPlayerIndex > 4 || actionCommandQueue.length == 4) {
-    //   setBattleState(BattleState.ActionTransaction)
-    // }
   }, [currentFieldPlayerIndex])
 
   useEffect(() => {
@@ -71,10 +110,10 @@ const GameWindow = () => {
     if (currentFieldPlayerIndex >= FIELD_PLAYER_NUMBER) return
     if (actionCommand == null) return
 
-    console.log('update actionCommand', actionCommand)
+    // console.log('update actionCommand', actionCommand)
 
     // ターゲット決定 => コマンド確定
-    if (actionCommand?.target !== undefined) {
+    if (actionCommand?.targetId !== undefined) {
       actionCommandQueue.push(actionCommand)
       console.log('pushed actionCommand', actionCommandQueue)
 
@@ -166,5 +205,22 @@ const GameWindow = () => {
     </Context.Provider>
   )
 }
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
+
+// const waitForMilliseconds = async (ms: number) => {
+//   await sleep(ms)
+//   console.log(`${ms}ミリ秒待機しました。`)
+
+//   await sleep(ms)
+//   console.log(`${ms}ミリ秒待機しました。`)
+
+//   await sleep(ms)
+//   console.log(`${ms}ミリ秒待機しました。`)
+// }
+
+// waitForMilliseconds(100).then(() => {
+//   console.log('完了')
+// })
 
 export default GameWindow
