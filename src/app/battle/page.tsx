@@ -16,7 +16,7 @@ import {
   UIFocusStatus,
 } from './context'
 
-const CHARACTER_NUMBER = 4
+const FIELD_PLAYER_NUMBER = 4
 
 const GameWindow = () => {
   // データ受信し、ここで初期値設定
@@ -66,6 +66,9 @@ const GameWindow = () => {
   }, [currentFieldPlayerIndex])
 
   useEffect(() => {
+    /* 発火タイミングに制約を設ける */
+    if (battleState == BattleState.ActionTransaction) return
+    if (currentFieldPlayerIndex >= FIELD_PLAYER_NUMBER) return
     if (actionCommand == null) return
 
     console.log('update actionCommand', actionCommand)
@@ -84,7 +87,7 @@ const GameWindow = () => {
       setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
       setActionCommand(null) // コマンド内容を
     }
-  }, [actionCommand])
+  }, [actionCommand, currentFieldPlayerIndex])
 
   // useEffect(() => {
   //   const intervalId = setInterval(() => {
@@ -98,7 +101,7 @@ const GameWindow = () => {
   // }, [])
 
   const initialContext: GameContext = {
-    currentFieldPlayerIndex: 0,
+    currentFieldPlayerIndex,
     fieldPlayers: [],
     actionCommand,
     battleState,
