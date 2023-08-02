@@ -1,10 +1,13 @@
 import { createContext } from 'react'
+import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
 
 export const Context = createContext<GameContext>(null)
 
 export type GameContext = {
   currentFieldPlayerIndex: number
+
   fieldPlayers: FieldPlayer[]
+  enemies: Enemy[]
 
   actionCommand: ActionCommand
   actionCommandQueue: ActionCommandQueue
@@ -20,13 +23,23 @@ export type GameContext = {
 
 export type ActionCommandQueue = ActionCommand[]
 
+export enum fieldCharacterType {
+  Enemy,
+  FieldPlayer,
+}
+
 // string部分はのちに型変更
 export type ActionCommand = {
-  executer?: string // どのプレイヤーの操作か
+  executer?: actionObject // どのプレイヤーの操作か
+  target?: actionObject // コマンドの実行対象は何か（敵, 見方）
   command?: string // どのコマンドを実行するのか
-  targetId?: number // コマンドの実行対象は何か（敵, 見方）
   content?: string // スキルや道具を用いる場合、その内容は何か
 } | null
+
+export type actionObject = {
+  objectType: fieldCharacterType
+  index: number
+}
 
 // string部分はのちに型変更
 export type FieldPlayer = {
@@ -44,9 +57,7 @@ export type Enemy = {
 // string部分はのちに型変更
 export type FieldPlayerStatus = {
   currentHitPoint: number
-  maxHitPoint: number //
   currentMagicPoint: number // どのコマンドを実行するのか
-  maxMagicPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
 } | null
@@ -54,31 +65,38 @@ export type FieldPlayerStatus = {
 // string部分はのちに型変更
 export type EnemyStatus = {
   currentHitPoint: number
-  maxHitPoint: number //
   currentMagicPoint: number // どのコマンドを実行するのか
-  maxMagicPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
+  onDamage: boolean
 }
 
 // string部分はのちに型変更
 export type FieldPlayerParameter = {
   attack: number
   vitality: number
+  speed: number
   defense: number
   intelligence: number
-} | null
+  maxHitPoint: number
+  maxMagicPoint: number
+}
 
 export type EnemyParameter = {
   attack: number
   vitality: number
+  speed: number
   defense: number
   intelligence: number
-} | null
+  maxHitPoint: number
+  maxMagicPoint: number
+}
 
 export enum BattleState {
   ActionTransaction,
   PlayerSelect,
+  PlayerWin,
+  GameOver
 }
 
 export enum FocusPlayer {
@@ -95,41 +113,23 @@ export enum UIFocusStatus {
   ITEM_LIST,
 }
 
-export const testPlayer: FieldPlayer = {
-  name: 'フェリス',
-  status: {
-    currentHitPoint: 300,
-    maxHitPoint: 480,
-    currentMagicPoint: 300,
-    maxMagicPoint: 500,
-    condition: 'normal',
-    command: 'たたかう',
-  },
-  parameter: {
-    attack: 100,
-    vitality: 100,
-    defense: 100,
-    intelligence: 100,
-  },
-}
-
-export const testPlayerData: FieldPlayer[] = [testPlayer, testPlayer, testPlayer, testPlayer]
-
 export const testEnemy: Enemy = {
   name: 'バグA',
   status: {
     currentHitPoint: 300,
-    maxHitPoint: 1200,
     currentMagicPoint: 300,
-    maxMagicPoint: 500,
     condition: 'normal',
     command: 'たたかう',
+    onDamage: false,
   },
   parameter: {
     attack: 100,
     vitality: 100,
     defense: 100,
     intelligence: 100,
+    maxHitPoint: 1000,
+    maxMagicPoint: 500,
+    speed: 100,
   },
 }
 

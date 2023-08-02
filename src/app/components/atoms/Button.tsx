@@ -9,13 +9,12 @@ type Props = {
 }
 
 const Button = ({ onClick, className, display }: Props) => {
-  const audio = new Audio("/sounds/decide.mp3")
-  // audio.play()
   const onClick2 = () => {
     if (onClick != undefined) {
       onClick()
     }
-    
+
+    const audio = new Audio('/sounds/decide.mp3')
     audio.play()
   }
 
@@ -28,7 +27,6 @@ const Button = ({ onClick, className, display }: Props) => {
       >
         {display}
       </button>
-      <audio src='/public/sounds/decide.mp3' />
     </>
   )
 }
