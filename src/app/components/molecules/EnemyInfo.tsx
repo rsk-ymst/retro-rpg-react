@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, UIFocusStatus, fieldCharacterType } from '@/app/battle/context'
+import { Context, UIFocusStatus, CharacterType } from '@/app/battle/context'
 
 export type Props = {
   className?: string
@@ -24,7 +24,7 @@ const EnemyInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
     context?.updateActionCommand({
       ...context.actionCommand,
       target: {
-        objectType: fieldCharacterType.Enemy,
+        objectType: CharacterType.Enemy,
         index: 0,
       },
     })

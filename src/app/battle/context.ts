@@ -23,7 +23,7 @@ export type GameContext = {
 
 export type ActionCommandQueue = ActionCommand[]
 
-export enum fieldCharacterType {
+export enum CharacterType {
   Enemy,
   FieldPlayer,
 }
@@ -37,9 +37,16 @@ export type ActionCommand = {
 } | null
 
 export type actionObject = {
-  objectType: fieldCharacterType
+  objectType: CharacterType
   index: number
 }
+
+export type ActionCharacter = {
+  type?: CharacterType // どのプレイヤーの操作か
+  name: string
+  status: Status
+  parameter: Parameter
+} | null
 
 // string部分はのちに型変更
 export type FieldPlayer = {
@@ -72,7 +79,26 @@ export type EnemyStatus = {
 }
 
 // string部分はのちに型変更
+export type Status = {
+  currentHitPoint: number
+  currentMagicPoint: number // どのコマンドを実行するのか
+  condition: string
+  command: string
+  onDamage: boolean
+}
+
+// string部分はのちに型変更
 export type FieldPlayerParameter = {
+  attack: number
+  vitality: number
+  speed: number
+  defense: number
+  intelligence: number
+  maxHitPoint: number
+  maxMagicPoint: number
+}
+
+export type Parameter = {
   attack: number
   vitality: number
   speed: number

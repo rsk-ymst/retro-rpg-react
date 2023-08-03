@@ -20,7 +20,7 @@ const EnemyArea = ({ className }: Props) => {
         {
           // if (enemies[0].status.currentHitPoint === 0) {
 
-          enemies[0].status.currentHitPoint === 0 && (
+          enemies[0].status.currentHitPoint <= 0 && (
             <motion.div
               animate={{
                 y: -30,
@@ -39,20 +39,25 @@ const EnemyArea = ({ className }: Props) => {
           // }
         }
         {enemies[0].status.currentHitPoint > 0 && (
-
-            //  <motion.div
-            //   animate={{
-            //     x: 200,
-            //   }}
-            //   initial={{ opacity: 1 }}
-            //   whileInView={{ opacity: 1 }}
-            //   transition={{ duration: 0.5 }}
-            //   className={'font-bold'}
-            // >
-          <>
-            <Image src='/images/enemy.png' height={200} width={200} alt={''} />
-            <div>{enemies[0]?.status.currentHitPoint}</div>
-          </>
+          //  <motion.div
+          //   animate={{
+          //     x: 200,
+          //   }}
+          //   initial={{ opacity: 1 }}
+          //   whileInView={{ opacity: 1 }}
+          //   transition={{ duration: 0.5 }}
+          //   className={'font-bold'}
+          // >
+          <div className='flex justify-center flex-col'>
+            <div className='text-white font-bold flex justify-center mb-2'>
+              <div>
+                {enemies[0]?.status.currentHitPoint} / {enemies[0]?.parameter.maxHitPoint}
+              </div>
+            </div>
+            <div>
+              <Image src='/images/enemy.png' height={200} width={200} alt={''} />
+            </div>
+          </div>
         )}
         {/* <motion.div
           animate={{
@@ -69,7 +74,6 @@ const EnemyArea = ({ className }: Props) => {
         {/* <Image src='/images/enemy.png' height={200} width={200} alt={''} /> */}
         {/* </motion.div> */}
         {/* {enemies[0]?.status.onDamage && ( */}
-
       </div>
     </div>
   )

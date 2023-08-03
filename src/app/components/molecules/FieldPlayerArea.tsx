@@ -10,6 +10,7 @@ export type Props = {
 
 const FieldPlayerArea = ({ className }: Props) => {
   const context = useContext(Context)
+
   const currentFieldPlayerIndex = context?.currentFieldPlayerIndex
 
   return (

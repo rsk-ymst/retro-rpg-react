@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, fieldCharacterType } from '@/app/battle/context'
+import { Context, CharacterType } from '@/app/battle/context'
 
 export type Props = {
   className?: string
@@ -22,7 +22,7 @@ const BasicOptions = ({ options, className }: Props) => {
   // context?.updateActionCommand({
   //   ...context?.actionCommand,
   //   executer: {
-  //     objectType: fieldCharacterType.FieldPlayer,
+  //     objectType: CharacterType.FieldPlayer,
   //     index: key,
   //   },
   // })
@@ -30,7 +30,7 @@ const BasicOptions = ({ options, className }: Props) => {
   return (
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
-        {characterOptions[charactersIdx].map((option, key) => {
+        {characterOptions[charactersIdx >= 0 ? charactersIdx : 0].map((option, key) => {
           return (
             <Button
               key={key}

@@ -10,7 +10,7 @@ export const testPlayerData: FieldPlayer[] = [
       command: 'たたかう',
     },
     parameter: {
-      attack: 100,
+      attack: 80,
       vitality: 100,
       defense: 100,
       intelligence: 100,
@@ -28,7 +28,7 @@ export const testPlayerData: FieldPlayer[] = [
       command: 'たたかう',
     },
     parameter: {
-      attack: 100,
+      attack: 20,
       vitality: 100,
       defense: 100,
       intelligence: 100,
@@ -46,7 +46,7 @@ export const testPlayerData: FieldPlayer[] = [
       command: 'たたかう',
     },
     parameter: {
-      attack: 100,
+      attack: 30,
       vitality: 100,
       defense: 100,
       intelligence: 100,
@@ -64,7 +64,7 @@ export const testPlayerData: FieldPlayer[] = [
       command: 'たたかう',
     },
     parameter: {
-      attack: 100,
+      attack: 50,
       vitality: 100,
       defense: 100,
       intelligence: 100,
