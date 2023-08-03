@@ -51,13 +51,13 @@ export type ActionCharacter = {
 // string部分はのちに型変更
 export type FieldPlayer = {
   name: string
-  status: FieldPlayerStatus
+  status: Status
   parameter: FieldPlayerParameter
 } | null
 
 export type Enemy = {
   name: string
-  status: EnemyStatus
+  status: Status
   parameter: EnemyParameter
 }
 

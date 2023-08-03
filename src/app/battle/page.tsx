@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import BattleBar from '../components/organisms/BattleBar'
 import BattleField from '../components/organisms/BattleField'
 import CommandMenu from '../components/organisms/CommandMenu'
+import { ATTACK_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -40,33 +41,43 @@ const GameWindow = () => {
   const [focusPlayer, setFocusPlayer] = useState<FocusPlayer>(FocusPlayer.A)
   const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
 
-  console.log('window reloaded -----------------------------------------')
-
   const updateBattleState = (value: BattleState) => setBattleState(value)
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
 
-  const fetchFieldObject = (obj?: actionObject): FieldPlayer | Enemy => {
-    if (obj?.objectType === CharacterType.Enemy) {
-      return enemies[obj?.index || 0]
-    } else {
-      return fieldPlayers[obj?.index || 0]
-    }
-  }
-
-  const sortActionCommandQueue = () => {
-    actionCommandQueue.sort((cur, next) => {
-      const curObj = fetchFieldObject(cur?.executer)
-      const nextObj = fetchFieldObject(next?.executer)
-
-      return (nextObj?.parameter.speed || 0) - (curObj?.parameter.speed || 0)
-    })
-  }
 
   useEffect(() => {
     MAIN_BGM.volume = 0.2
     MAIN_BGM.play()
   }, [])
+
+  /**
+   * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
+   */
+  const fetchFieldObject = (obj?: actionObject): FieldPlayer | Enemy => {
+    if (!obj) return null
+
+    if (obj.objectType === CharacterType.Enemy) {
+      return enemies[obj.index || 0]
+    } else {
+      return fieldPlayers[obj.index || 0]
+    }
+  }
+
+  /**
+   * 各フィールドキャラクタの素早さ順でアクションコマンドのソートを行う
+   */
+  const sortActionCommandQueue = () => {
+    actionCommandQueue.sort((cur, next) => {
+      if (!cur || !next) return 0
+
+      const curObj = fetchFieldObject(cur.executer)
+      const nextObj = fetchFieldObject(next.executer)
+
+      return (nextObj?.parameter.speed || 0) - (curObj?.parameter.speed || 0)
+    })
+  }
+
 
   /**
    *======================================
@@ -89,34 +100,31 @@ const GameWindow = () => {
 
         for (let index = 0; index < FIELD_PLAYER_NUMBER; index++) {
           const command = actionCommandQueue.shift()
-          const executer = fetchFieldObject(command?.executer)
+          if (!command) return
 
-          const damage = (command?.command === 'たたかう') ?
-            executer?.parameter.attack : 0
+          const executer = fetchFieldObject(command.executer)
+          const damage = command.command === 'たたかう' ? executer?.parameter.attack : 0
 
-
-          setCurrentFieldPlayerIndex(command?.executer?.index || 0)
+          setCurrentFieldPlayerIndex(command.executer?.index || 0)
           await sleep(1000)
 
-          new Audio('/sounds/attack.mp3').play()
+          ATTACK_SE.play()
 
-          const idx = command?.target?.index || 0
-          const buf = enemies[idx]
-          buf.status.currentHitPoint -= damage || 0
-          setEnemies(
-            enemies.map((e, i) => (i == idx ? buf : e))
-          )
+          const bufTarget = fetchFieldObject(command.target)
+          if (bufTarget === null || bufTarget === undefined) {
+            return
+          }
 
-          // enemies[idx].status.currentHitPoint -= damage || 0
+          bufTarget.status.currentHitPoint -= damage || 0
+          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
 
-
-          if (enemies[idx].status.currentHitPoint <= 0) {
+          if (enemies[command?.target?.index || 0].status.currentHitPoint <= 0) {
             await sleep(2000)
             setBattleState(BattleState.PlayerWin)
             return
           }
 
-          console.log('enemyに100ダメージ!', enemies[idx].status)
+          console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
           await sleep(1000)
         }
         enemies[0].status.onDamage = false
@@ -190,7 +198,7 @@ const GameWindow = () => {
 
       // キャラクタ全員のコマンドが決定したら、stateを切り替える
       if (actionCommandQueue.length >= 4) {
-        setCurrentFieldPlayerIndex(-1)
+        setCurrentFieldPlayerIndex(-1) // フィールドキャラクタのフォーカスを一時キャンセルする
         setBattleState(BattleState.ActionTransaction)
         return
       }
@@ -218,49 +226,9 @@ const GameWindow = () => {
       <div className='flex justify-center m-4'>
         <div className='bg-black w-[960px] h-[540px]'>
           <div className='flex justify-center flex-col items-center'>
-            {/* メニュー */}
             <BattleBar className={'w-[920px] h-[50px] mt-2'} />
-            {/* <div className='bg-blue-600 w-[920px] h-[50px] mt-2 rounded-lg border-2 border-t-red-50'> */}
-
-            {/* </div> */}
-            {/* </div> */}
-
-            {/* バトルフィールド */}
-            {/* <div className='flex justify-center'> */}
             <BattleField className={'w-[920px] h-[350px]'} />
-            {/* <div className='bg-gray-700 w-[920px] h-[320px]'>
-        {/* enemy filed */}
-            {/* nakama filed */}
-            {/* </div> */}
-            {/* </div> */}
-
-            {/* コマンドメニュー */}
             <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
-            {/* <div className='flex justify-center m-8'> */}
-            {/* <div className='flex bg-blue-600 w-[920px] h-[150px] mb-2 rounded-lg border-2 border-t-red-50'> */}
-            {/* <div className='flex'> */}
-            {/* <div className='flex-[0.8] h-full border-2 border-t-red-50'>
-            {/* <div>たたかう</div>
-            <div>にげる</div>
-            <div>どうぐ</div>
-            <div>助ける</div> */}
-            {/* </div> */}
-
-            {/* <div className='flex-1 h-full border-2 border-t-red-50'> */}
-            {/* <div>たたかう</div>
-            <div>にげる</div>
-            <div>どうぐ</div>
-            <div>助ける</div> */}
-            {/* </div> */}
-
-            {/* <div className='flex-[2] h-full border-2 border-t-red-50'> */}
-            {/* <div>たたかう</div>
-            <div>にげる</div>
-            <div>どうぐ</div>
-            <div>助ける</div> */}
-            {/* </div> */}
-            {/* </div> */}
-            {/* </div> */}
           </div>
         </div>
       </div>
