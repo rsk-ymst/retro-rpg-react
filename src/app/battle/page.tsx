@@ -55,7 +55,7 @@ const GameWindow = () => {
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
    */
   const fetchFieldObject = (obj?: actionObject): FieldPlayer | Enemy => {
-    if (!obj) return null
+    if (!obj) throw new Error("Object")
 
     if (obj.objectType === CharacterType.Enemy) {
       return enemies[obj.index || 0]
@@ -88,7 +88,7 @@ const GameWindow = () => {
     console.log('update battleState', battleState)
 
     if (battleState == BattleState.ActionTransaction) {
-      console.log('before: ', actionCommandQueue[0]?.executer?.index)
+      console.log('before: ', actionCommandQueue[0]?.executer)
 
       /* ソート */
       sortActionCommandQueue()
@@ -103,6 +103,7 @@ const GameWindow = () => {
           if (!command) return
 
           const executer = fetchFieldObject(command.executer)
+          console.log("exec", executer)
           const damage = command.command === 'たたかう' ? executer?.parameter.attack : 0
 
           setCurrentFieldPlayerIndex(command.executer?.index || 0)
@@ -116,6 +117,8 @@ const GameWindow = () => {
           }
 
           bufTarget.status.currentHitPoint -= damage || 0
+          
+          bufTarget.status.onDamage = true
           setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
 
           if (enemies[command?.target?.index || 0].status.currentHitPoint <= 0) {
@@ -126,8 +129,13 @@ const GameWindow = () => {
 
           console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
           await sleep(1000)
+
+          bufTarget.status.onDamage = false
+          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
         }
-        enemies[0].status.onDamage = false
+
+        setCurrentFieldPlayerIndex(-1)
+        await sleep(1500)
 
         setBattleState(BattleState.PlayerSelect)
       }
@@ -164,10 +172,13 @@ const GameWindow = () => {
 
   /**
    *======================================
-   * actionCommandの変化に伴う副作用
+   * currentFieldPlayerIndexの変化に伴う副作用
    *======================================
    */
   useEffect(() => {
+    if (battleState === BattleState.ActionTransaction)
+      return 
+
     if (currentFieldPlayerIndex == 4) {
       setCurrentFieldPlayerIndex(-1)
     }

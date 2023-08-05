@@ -42,11 +42,36 @@ export type actionObject = {
 }
 
 export type ActionCharacter = {
-  type?: CharacterType // どのプレイヤーの操作か
+  type: CharacterType // どのプレイヤーの操作か
   name: string
   status: Status
   parameter: Parameter
+  commandOptions: CommandOption[]
 } | null
+
+
+
+export type Skill = {
+  name: string
+  type: SkillType,
+  power: number,
+  consumeMagicPoint: number
+  description: string
+}
+
+enum SkillType {
+  PhysicalAttack,
+  SpecialAttack,
+  Healing,
+  Defence
+}
+
+
+
+export type CommandOption = {
+  commandName: string
+  onClick: () => void
+}
 
 // string部分はのちに型変更
 export type FieldPlayer = {

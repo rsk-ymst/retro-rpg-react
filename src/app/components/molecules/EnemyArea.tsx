@@ -18,8 +18,6 @@ const EnemyArea = ({ className }: Props) => {
     <div className={`${className}`}>
       <div className='flex justify-center align-middle h-full items-center'>
         {
-          // if (enemies[0].status.currentHitPoint === 0) {
-
           enemies[0].status.currentHitPoint <= 0 && (
             <motion.div
               animate={{
@@ -36,18 +34,8 @@ const EnemyArea = ({ className }: Props) => {
               <Image src='/images/enemy.png' height={200} width={200} alt={''} />
             </motion.div>
           )
-          // }
         }
         {enemies[0].status.currentHitPoint > 0 && (
-          //  <motion.div
-          //   animate={{
-          //     x: 200,
-          //   }}
-          //   initial={{ opacity: 1 }}
-          //   whileInView={{ opacity: 1 }}
-          //   transition={{ duration: 0.5 }}
-          //   className={'font-bold'}
-          // >
           <div className='flex justify-center flex-col'>
             <div className='text-white font-bold flex justify-center mb-2'>
               <div>
@@ -59,21 +47,27 @@ const EnemyArea = ({ className }: Props) => {
             </div>
           </div>
         )}
-        {/* <motion.div
-          animate={{
-            y: -50,
-            transitionEnd: {
-              display: 'none',
-            },
-          }}
-          initial={{ opacity: 1 }}
-          whileInView={{ opacity: 0 }}
-          transition={{ duration: 1.5 }}
-          className={'font-bold'}
-        > */}
-        {/* <Image src='/images/enemy.png' height={200} width={200} alt={''} /> */}
-        {/* </motion.div> */}
-        {/* {enemies[0]?.status.onDamage && ( */}
+        {
+          enemies[0]?.status.onDamage ? (
+          <motion.div
+            animate={{
+              y: -50,
+              transitionEnd: {
+                display: 'none',
+              },
+            }}
+            initial={{ opacity: 1 }}
+            whileInView={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+            className={'font-bold text-white'}
+          > 
+            100
+          </motion.div>
+        ) : 
+        <div className='bg-  bg-transparent text-transparent'>
+          100
+        </div>
+        }
       </div>
     </div>
   )
