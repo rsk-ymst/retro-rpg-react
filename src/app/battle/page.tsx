@@ -1,5 +1,8 @@
 'use client'
 
+import './style.css'
+import localFont from 'next/font/local'
+import Head from 'next/head'
 import { useEffect, useState } from 'react'
 import BattleBar from '../components/organisms/BattleBar'
 import BattleField from '../components/organisms/BattleField'
@@ -19,6 +22,8 @@ import {
   CharacterType,
   testEnemyData,
 } from './context'
+
+const myFont = localFont({ src: '../../../public/fonts/BestTen-CRT.otf' })
 
 import { testPlayerData } from './player'
 
@@ -45,7 +50,6 @@ const GameWindow = () => {
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
 
-
   useEffect(() => {
     MAIN_BGM.volume = 0.2
     MAIN_BGM.play()
@@ -55,7 +59,7 @@ const GameWindow = () => {
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
    */
   const fetchFieldObject = (obj?: actionObject): FieldPlayer | Enemy => {
-    if (!obj) throw new Error("Object")
+    if (!obj) throw new Error('Object')
 
     if (obj.objectType === CharacterType.Enemy) {
       return enemies[obj.index || 0]
@@ -77,7 +81,6 @@ const GameWindow = () => {
       return (nextObj?.parameter.speed || 0) - (curObj?.parameter.speed || 0)
     })
   }
-
 
   /**
    *======================================
@@ -103,7 +106,7 @@ const GameWindow = () => {
           if (!command) return
 
           const executer = fetchFieldObject(command.executer)
-          console.log("exec", executer)
+          console.log('exec', executer)
           const damage = command.command === 'たたかう' ? executer?.parameter.attack : 0
 
           setCurrentFieldPlayerIndex(command.executer?.index || 0)
@@ -117,7 +120,7 @@ const GameWindow = () => {
           }
 
           bufTarget.status.currentHitPoint -= damage || 0
-          
+
           bufTarget.status.onDamage = true
           setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
 
@@ -176,8 +179,7 @@ const GameWindow = () => {
    *======================================
    */
   useEffect(() => {
-    if (battleState === BattleState.ActionTransaction)
-      return 
+    if (battleState === BattleState.ActionTransaction) return
 
     if (currentFieldPlayerIndex == 4) {
       setCurrentFieldPlayerIndex(-1)
@@ -234,15 +236,20 @@ const GameWindow = () => {
 
   return (
     <Context.Provider value={initialContext}>
-      <div className='flex justify-center m-4'>
-        <div className='bg-black w-[960px] h-[540px]'>
-          <div className='flex justify-center flex-col items-center'>
-            <BattleBar className={'w-[920px] h-[50px] mt-2'} />
-            <BattleField className={'w-[920px] h-[350px]'} />
-            <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
+      <Head>
+        <link />
+      </Head>
+      <main className={myFont.className}>
+        <div className='flex justify-center m-4'>
+          <div className='bg-black w-[960px] h-[540px]'>
+            <div className='flex justify-center flex-col items-center'>
+              <BattleBar className={'w-[920px] h-[50px] mt-2'} />
+              <BattleField className={'w-[920px] h-[350px]'} />
+              <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
+            </div>
           </div>
         </div>
-      </div>
+      </main>
     </Context.Provider>
   )
 }
