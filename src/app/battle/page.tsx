@@ -7,18 +7,17 @@ import { useEffect, useState } from 'react'
 import BattleBar from '../components/organisms/BattleBar'
 import BattleField from '../components/organisms/BattleField'
 import CommandMenu from '../components/organisms/CommandMenu'
+import { ActionCharacter } from '../models/actionCharacter'
 import { ATTACK_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
   BattleState,
   Context,
-  Enemy,
-  FieldPlayer,
   FocusPlayer,
   GameContext,
   UIFocusStatus,
-  actionObject,
+  ActionCharacterIdentifier,
   CharacterType,
   testEnemyData,
 } from './context'
@@ -34,10 +33,10 @@ const GameWindow = () => {
   // データ受信し、ここで初期値設定
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [enterGame, setEnterGame] = useState<boolean>(true)
-  const [fieldPlayers, setFieldPlayers] = useState<FieldPlayer[]>(testPlayerData)
+  const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
 
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(0)
-  const [enemies, setEnemies] = useState<Enemy[]>(testEnemyData)
+  const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
 
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
@@ -58,7 +57,7 @@ const GameWindow = () => {
   /**
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
    */
-  const fetchFieldObject = (obj?: actionObject): FieldPlayer | Enemy => {
+  const fetchFieldEntity = (obj?: ActionCharacterIdentifier): ActionCharacter => {
     if (!obj) throw new Error('Object')
 
     if (obj.objectType === CharacterType.Enemy) {
@@ -68,6 +67,14 @@ const GameWindow = () => {
     }
   }
 
+  const updateCharacterStatus = (obj: ActionCharacterIdentifier, target: ActionCharacter) => {
+    if (obj.objectType === CharacterType.Enemy)
+      setEnemies(enemies.map((e, i) => (i === obj.index ? target : e)))
+
+    if (obj.objectType === CharacterType.FieldPlayer)
+      setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+  }
+
   /**
    * 各フィールドキャラクタの素早さ順でアクションコマンドのソートを行う
    */
@@ -75,8 +82,8 @@ const GameWindow = () => {
     actionCommandQueue.sort((cur, next) => {
       if (!cur || !next) return 0
 
-      const curObj = fetchFieldObject(cur.executer)
-      const nextObj = fetchFieldObject(next.executer)
+      const curObj = fetchFieldEntity(cur.executer)
+      const nextObj = fetchFieldEntity(next.executer)
 
       return (nextObj?.parameter.speed || 0) - (curObj?.parameter.speed || 0)
     })
@@ -105,24 +112,26 @@ const GameWindow = () => {
           const command = actionCommandQueue.shift()
           if (!command) return
 
-          const executer = fetchFieldObject(command.executer)
-          console.log('exec', executer)
-          const damage = command.command === 'たたかう' ? executer?.parameter.attack : 0
+          const executerIdentifier = command.executer
+          const targetIdentifier = command.target
+          if (!executerIdentifier || !targetIdentifier) return
 
-          setCurrentFieldPlayerIndex(command.executer?.index || 0)
+          const executerEntity = fetchFieldEntity(executerIdentifier)
+          const targetEntity = fetchFieldEntity(targetIdentifier)
+          if (!executerEntity || !targetEntity) return
+
+
+          const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
+
+          setCurrentFieldPlayerIndex(executerIdentifier.index)
           await sleep(1000)
 
           ATTACK_SE.play()
 
-          const bufTarget = fetchFieldObject(command.target)
-          if (bufTarget === null || bufTarget === undefined) {
-            return
-          }
+          targetEntity.status.currentHitPoint -= damage || 0
+          targetEntity.status.onDamage = true
 
-          bufTarget.status.currentHitPoint -= damage || 0
-
-          bufTarget.status.onDamage = true
-          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
+          updateCharacterStatus(targetIdentifier, targetEntity)
 
           if (enemies[command?.target?.index || 0].status.currentHitPoint <= 0) {
             await sleep(2000)
@@ -133,8 +142,8 @@ const GameWindow = () => {
           console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
           await sleep(1000)
 
-          bufTarget.status.onDamage = false
-          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? bufTarget : e)))
+          targetEntity.status.onDamage = false
+          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? targetEntity : e)))
         }
 
         setCurrentFieldPlayerIndex(-1)

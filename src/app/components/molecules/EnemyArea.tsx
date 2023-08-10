@@ -39,7 +39,7 @@ const EnemyArea = ({ className }: Props) => {
           <div className='flex justify-center flex-col'>
             <div className='text-white font-bold flex justify-center mb-2'>
               <div>
-                {enemies[0]?.status.currentHitPoint} / {enemies[0]?.parameter.maxHitPoint}
+                {enemies[0]?.status.currentHitPoint} / {enemies[0]?.parameter.hitPoint}
               </div>
             </div>
             <div>
@@ -60,10 +60,10 @@ const EnemyArea = ({ className }: Props) => {
             whileInView={{ opacity: 0 }}
             transition={{ duration: 1.5 }}
             className={'font-bold text-white'}
-          > 
+          >
             100
           </motion.div>
-        ) : 
+        ) :
         <div className='bg-  bg-transparent text-transparent'>
           100
         </div>

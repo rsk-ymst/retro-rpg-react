@@ -32,10 +32,10 @@ const FieldPlayerArea = ({ className }: Props) => {
               <Image
                 key={i}
                 src={`/images/${name}.png`}
-                height={70}
-                width={70}
+                height={64}
+                width={64}
                 alt={''}
-                className={`${marginForFocus} mt-4`}
+                className={`${marginForFocus} mt-5 `}
               />
               </div>
             )

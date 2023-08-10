@@ -9,12 +9,12 @@ module.exports = {
     extend: {
       flexGrow: {
         0.8: '0.8',
-        2: '2'
+        2: '2',
       },
       backgroundImage: {
+        battle: "url('/images/battle_field_default.png')",
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+        'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
       },
     },
   },

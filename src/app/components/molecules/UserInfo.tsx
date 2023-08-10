@@ -16,7 +16,7 @@ export type Option = {
   onClick: () => void
 }
 
-const UserInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
+const UserInfo = ({ className }: Props) => {
   const context = useContext(Context)
   const fieldPlayers = context?.fieldPlayers || []
 
@@ -28,7 +28,7 @@ const UserInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
             <>
               <div className='flex justify-start w-full'>
                 <div className='flex-1'>{fp?.name}</div>
-                <div className='flex-1'>{`${fp?.status?.currentHitPoint} / ${fp?.parameter.maxHitPoint}  `}</div>
+                <div className='flex-1'>{`${fp?.status?.currentHitPoint} / ${fp?.parameter.hitPoint}  `}</div>
                 <div className='flex-1'>{fp?.status?.command}</div>
               </div>
             </>
