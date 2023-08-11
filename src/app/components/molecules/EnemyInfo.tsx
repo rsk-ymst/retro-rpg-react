@@ -24,7 +24,7 @@ const EnemyInfo = ({ className }: Props) => {
     context?.updateActionCommand({
       ...context.actionCommand,
       target: {
-        objectType: CharacterType.Enemy,
+        type: CharacterType.Enemy,
         index: 0,
       },
     })
