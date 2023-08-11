@@ -2,6 +2,7 @@
 
 import Image from 'next/image'
 import React, { useContext } from 'react'
+import FieldPlayer from './FieldPlayer'
 import { BattleState, Context } from '@/app/battle/context'
 
 export type Props = {
@@ -17,7 +18,7 @@ const FieldPlayerArea = ({ className }: Props) => {
     <div className={`${className}`}>
       <div className='flex justify-center align-middle h-full'>
         <div className='w-full flex flex-col items-center'>
-          {['ferris', 'gopher', 'linux', 'droid'].map((name, i) => {
+          {['ferris', 'gopher', 'tux', 'droid'].map((name, i) => {
             console.log(`cur: ${context?.currentFieldPlayerIndex}`)
             const marginForFocus = i == currentFieldPlayerIndex ? 'mr-20' : undefined
 
@@ -29,14 +30,8 @@ const FieldPlayerArea = ({ className }: Props) => {
                       <Image src={`/images/cursor2.png`} height={30} width={30} alt={''} />
                     </div>
                   )}
-                <Image
-                  key={i}
-                  src={`/images/${name}.png`}
-                  height={64}
-                  width={64}
-                  alt={''}
-                  className={`${marginForFocus} mt-5 `}
-                />
+
+                <FieldPlayer characterName={name} className={`${marginForFocus} mt-5`} />
               </div>
             )
           })}
