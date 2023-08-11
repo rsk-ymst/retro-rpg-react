@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, CharacterType } from '@/app/battle/context'
+import { Context, CharacterType, UIFocusStatus, BattleState } from '@/app/battle/context'
 
 export type Props = {
   className?: string
@@ -19,13 +19,6 @@ const BasicOptions = ({ options, className }: Props) => {
 
   const characterOptions = [options, options, options, options]
   const charactersIdx = context?.currentFieldPlayerIndex || 0
-  // context?.updateActionCommand({
-  //   ...context?.actionCommand,
-  //   executer: {
-  //     objectType: CharacterType.FieldPlayer,
-  //     index: key,
-  //   },
-  // })
 
   return (
     <div className={`${className}`}>
@@ -37,6 +30,12 @@ const BasicOptions = ({ options, className }: Props) => {
               className={'text-start'}
               display={option.commandName}
               onClick={option.onClick}
+              disabled={
+                !(
+                  context?.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
+                  context.battleState === BattleState.PlayerSelect
+                )
+              }
             />
           )
         })}

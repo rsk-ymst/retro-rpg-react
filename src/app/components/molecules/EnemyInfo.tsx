@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, UIFocusStatus, CharacterType } from '@/app/battle/context'
+import { Context, UIFocusStatus, CharacterType, BattleState } from '@/app/battle/context'
 
 export type Props = {
   className?: string
@@ -17,7 +17,7 @@ export type Option = {
   onClick: () => void
 }
 
-const EnemyInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
+const EnemyInfo = ({ className }: Props) => {
   const context = useContext(Context)
 
   const onClick = () =>
@@ -32,7 +32,17 @@ const EnemyInfo = ({ className, enemyName, enemyNumber, UIFocus }: Props) => {
   return (
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
-        <Button className={'text-start'} display={'バグA'} onClick={onClick} />
+        <Button
+          className={'text-start'}
+          display={'バグA'}
+          onClick={onClick}
+          disabled={
+            !(
+              context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
+              context.battleState === BattleState.PlayerSelect
+            )
+          }
+        />
       </div>
     </div>
   )

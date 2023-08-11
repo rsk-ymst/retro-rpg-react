@@ -42,7 +42,6 @@ const GameWindow = () => {
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
 
   const [battleState, setBattleState] = useState<BattleState>(BattleState.PlayerSelect)
-  const [focusPlayer, setFocusPlayer] = useState<FocusPlayer>(FocusPlayer.A)
   const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
 
   const updateBattleState = (value: BattleState) => setBattleState(value)
@@ -61,9 +60,9 @@ const GameWindow = () => {
     if (!obj) throw new Error('Object')
 
     if (obj.objectType === CharacterType.Enemy) {
-      return enemies[obj.index || 0]
+      return enemies[obj.index]
     } else {
-      return fieldPlayers[obj.index || 0]
+      return fieldPlayers[obj.index]
     }
   }
 
@@ -120,7 +119,6 @@ const GameWindow = () => {
           const targetEntity = fetchFieldEntity(targetIdentifier)
           if (!executerEntity || !targetEntity) return
 
-
           const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
 
           setCurrentFieldPlayerIndex(executerIdentifier.index)
@@ -159,6 +157,7 @@ const GameWindow = () => {
 
     if (battleState == BattleState.PlayerSelect) {
       setCurrentFieldPlayerIndex(0)
+      setUIFocus(UIFocusStatus.BASIC_OPTIONS)
       setActionCommandQueue([])
       setActionCommand(null)
 
@@ -227,6 +226,7 @@ const GameWindow = () => {
 
       setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
       setActionCommand(null) // コマンド内容を
+      setUIFocus(UIFocusStatus.BASIC_OPTIONS)
     }
   }, [actionCommand, currentFieldPlayerIndex])
 

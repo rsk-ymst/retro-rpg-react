@@ -17,12 +17,12 @@ const basicOptions: characterOption[] = [
       return
     },
   },
-  {
-    commandName: 'スキル',
-    onClick: () => {
-      return
-    },
-  },
+  // {
+  //   commandName: 'スキル',
+  //   onClick: () => {
+  //     return
+  //   },
+  // },
   {
     commandName: 'どうぐ',
     onClick: () => {
@@ -46,7 +46,6 @@ const enemyOptions: Object[] = [
   },
 ]
 
-
 const CommandMenu = ({ className }: Props) => {
   const context = useContext(Context)
 
@@ -55,8 +54,13 @@ const CommandMenu = ({ className }: Props) => {
     context?.updateActionCommand({ ...context.actionCommand, command: 'たたかう' })
   }
 
+  basicOptions[1].onClick = () => {
+    context?.updateUIFocusStatus(UIFocusStatus.SKILLS)
+    context?.updateActionCommand({ ...context.actionCommand, command: 'スキル' })
+  }
+
   return (
-    <div className={`flex bg-blue-600 rounded-lg border-2 border-t-red-50 ${className}`}>
+    <div className={`flex bg-gradient-to-r from-sky-500 to-indigo-500 rounded-lg border-2 border-t-red-50 ${className}`}>
       <BasicOptions className='flex-[0.8] h-full' options={basicOptions} />
       <EnemyInfo className='flex-1 h-full border-x-2' UIFocus={context?.UIFocus} />
       <UserInfo className='flex-[2] h-full border-t-red-50'></UserInfo>

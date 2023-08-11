@@ -3,7 +3,6 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
-import Button from '../atoms/Button'
 import { Context } from '@/app/battle/context'
 
 export type Props = {
@@ -17,24 +16,22 @@ const EnemyArea = ({ className }: Props) => {
   return (
     <div className={`${className}`}>
       <div className='flex justify-center align-middle h-full items-center'>
-        {
-          enemies[0].status.currentHitPoint <= 0 && (
-            <motion.div
-              animate={{
-                y: -30,
-                transitionEnd: {
-                  display: 'none',
-                },
-              }}
-              initial={{ opacity: 1 }}
-              whileInView={{ opacity: 0 }}
-              transition={{ duration: 2.0 }}
-              className={'font-bold'}
-            >
-              <Image src='/images/enemy.png' height={200} width={200} alt={''} />
-            </motion.div>
-          )
-        }
+        {enemies[0].status.currentHitPoint <= 0 && (
+          <motion.div
+            animate={{
+              y: -30,
+              transitionEnd: {
+                display: 'none',
+              },
+            }}
+            initial={{ opacity: 1 }}
+            whileInView={{ opacity: 0 }}
+            transition={{ duration: 2.0 }}
+            className={'font-bold'}
+          >
+            <Image src='/images/enemy.png' height={128} width={128} alt={''} />
+          </motion.div>
+        )}
         {enemies[0].status.currentHitPoint > 0 && (
           <div className='flex justify-center flex-col'>
             <div className='text-white font-bold flex justify-center mb-2'>
@@ -43,12 +40,11 @@ const EnemyArea = ({ className }: Props) => {
               </div>
             </div>
             <div>
-              <Image src='/images/enemy.png' height={200} width={200} alt={''} />
+              <Image src='/images/enemy2.png' height={128} width={128} alt={''} />
             </div>
           </div>
         )}
-        {
-          enemies[0]?.status.onDamage ? (
+        {enemies[0]?.status.onDamage ? (
           <motion.div
             animate={{
               y: -50,
@@ -63,11 +59,9 @@ const EnemyArea = ({ className }: Props) => {
           >
             100
           </motion.div>
-        ) :
-        <div className='bg-  bg-transparent text-transparent'>
-          100
-        </div>
-        }
+        ) : (
+          <div className='bg-transparent text-transparent'>100</div>
+        )}
       </div>
     </div>
   )

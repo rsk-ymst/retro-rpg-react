@@ -6,9 +6,10 @@ type Props = {
   className: string
   onClick?: () => void
   display: string
+  disabled?: boolean
 }
 
-const Button = ({ onClick, className, display }: Props) => {
+const Button = ({ onClick, className, display, disabled }: Props) => {
   const onClick2 = () => {
     if (onClick != undefined) {
       onClick()
@@ -20,11 +21,7 @@ const Button = ({ onClick, className, display }: Props) => {
 
   return (
     <>
-      <button
-        onClick={onClick2}
-        className={`${className}`}
-        // disabled
-      >
+      <button onClick={onClick2} className={`${className}`} disabled={disabled}>
         {display}
       </button>
     </>
