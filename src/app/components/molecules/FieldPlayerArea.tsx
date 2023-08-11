@@ -17,7 +17,7 @@ const FieldPlayerArea = ({ className }: Props) => {
     <div className={`${className}`}>
       <div className='flex justify-center align-middle h-full'>
         <div className='w-full flex flex-col items-center'>
-          {['ferris', 'gopher', 'linux', 'droid'].map((name, i) => {
+          {['ferris', 'gopher', 'tux', 'droid'].map((name, i) => {
             console.log(`cur: ${context?.currentFieldPlayerIndex}`)
             const marginForFocus = i == currentFieldPlayerIndex ? 'mr-20' : undefined
 
@@ -31,7 +31,7 @@ const FieldPlayerArea = ({ className }: Props) => {
                   )}
                 <Image
                   key={i}
-                  src={`/images/${name}.png`}
+                  src={`/images/${name}/index.png`}
                   height={64}
                   width={64}
                   alt={''}
