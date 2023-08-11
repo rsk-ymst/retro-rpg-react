@@ -20,9 +20,17 @@ const BasicOptions = ({ options, className }: Props) => {
   const characterOptions = [options, options, options, options]
   const charactersIdx = context?.currentFieldPlayerIndex || 0
 
+  const isFocus =
+    context?.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
+    context.battleState === BattleState.PlayerSelect
+
   return (
     <div className={`${className}`}>
-      <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
+      <div
+        className={`flex flex-col mt-2 ml-4 isFocus ${
+          isFocus ? 'text-white' : 'text-gray-500'
+        } font-bold`}
+      >
         {characterOptions[charactersIdx >= 0 ? charactersIdx : 0].map((option, key) => {
           return (
             <Button
@@ -30,12 +38,7 @@ const BasicOptions = ({ options, className }: Props) => {
               className={'text-start'}
               display={option.commandName}
               onClick={option.onClick}
-              disabled={
-                !(
-                  context?.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
-                  context.battleState === BattleState.PlayerSelect
-                )
-              }
+              disabled={!isFocus}
             />
           )
         })}
