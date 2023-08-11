@@ -38,7 +38,7 @@ export type ActionCommand = {
 } | null
 
 export type ActionCharacterIdentifier = {
-  objectType: CharacterType
+  type: CharacterType
   index: number
 }
 

@@ -29,6 +29,12 @@ import { testPlayerData } from './player'
 const FIELD_PLAYER_NUMBER = 4
 const MAIN_BGM = new Audio('/music/8bit.mp3')
 
+const getRandomInt = (min: number, max: number) => {
+  min = Math.ceil(min)
+  max = Math.floor(max)
+  return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
 const GameWindow = () => {
   // データ受信し、ここで初期値設定
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
@@ -59,7 +65,7 @@ const GameWindow = () => {
   const fetchFieldEntity = (obj?: ActionCharacterIdentifier): ActionCharacter => {
     if (!obj) throw new Error('Object')
 
-    if (obj.objectType === CharacterType.Enemy) {
+    if (obj.type === CharacterType.Enemy) {
       return enemies[obj.index]
     } else {
       return fieldPlayers[obj.index]
@@ -67,11 +73,28 @@ const GameWindow = () => {
   }
 
   const updateCharacterStatus = (obj: ActionCharacterIdentifier, target: ActionCharacter) => {
-    if (obj.objectType === CharacterType.Enemy)
+    if (obj.type === CharacterType.Enemy)
       setEnemies(enemies.map((e, i) => (i === obj.index ? target : e)))
 
-    if (obj.objectType === CharacterType.FieldPlayer)
+    if (obj.type === CharacterType.FieldPlayer)
       setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+  }
+
+  const addEnemyCommand = () => {
+    enemies.map(() => {
+      const actionCommand: ActionCommand = {
+        executer: {
+          type: CharacterType.Enemy,
+          index: 0,
+        },
+        target: {
+          type: CharacterType.FieldPlayer,
+          index: getRandomInt(0, 3),
+        },
+        command: 'たたかう',
+      }
+      actionCommandQueue.push(actionCommand)
+    })
   }
 
   /**
@@ -100,6 +123,7 @@ const GameWindow = () => {
       console.log('before: ', actionCommandQueue[0]?.executer)
 
       /* ソート */
+      addEnemyCommand()
       sortActionCommandQueue()
 
       console.log('after: ', actionCommandQueue[0]?.executer?.index)
@@ -107,7 +131,7 @@ const GameWindow = () => {
       const execTransaction = async () => {
         await sleep(1000)
 
-        for (let index = 0; index < FIELD_PLAYER_NUMBER; index++) {
+        for (let index = 0; index < FIELD_PLAYER_NUMBER + 1; index++) {
           const command = actionCommandQueue.shift()
           if (!command) return
 
@@ -119,25 +143,25 @@ const GameWindow = () => {
           const targetEntity = fetchFieldEntity(targetIdentifier)
           if (!executerEntity || !targetEntity) return
 
-          const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
+          if (executerEntity.type === 'FieldPlayer')
+            setCurrentFieldPlayerIndex(executerIdentifier.index)
 
-          setCurrentFieldPlayerIndex(executerIdentifier.index)
           await sleep(1000)
-
           ATTACK_SE.play()
 
+          const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
           targetEntity.status.currentHitPoint -= damage || 0
           targetEntity.status.onDamage = true
 
           updateCharacterStatus(targetIdentifier, targetEntity)
 
-          if (enemies[command?.target?.index || 0].status.currentHitPoint <= 0) {
+          if (targetEntity.type === 'Enemy' && targetEntity.status.currentHitPoint <= 0) {
             await sleep(2000)
             setBattleState(BattleState.PlayerWin)
             return
           }
 
-          console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
+          // console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
           await sleep(1000)
 
           targetEntity.status.onDamage = false
@@ -196,7 +220,7 @@ const GameWindow = () => {
     setActionCommand({
       ...actionCommand,
       executer: {
-        objectType: CharacterType.FieldPlayer,
+        type: CharacterType.FieldPlayer,
         index: currentFieldPlayerIndex,
       },
     })
