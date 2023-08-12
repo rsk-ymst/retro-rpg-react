@@ -3,9 +3,17 @@ import { createContext } from 'react'
 export type ActionCharacter = {
   type: 'Enemy' | 'FieldPlayer' // どのプレイヤーの操作か
   name: string
+  drawState: ActionCharacterDrawState
   status: BattleVariableStatus
   parameter: CharacterParameter
   commandOptions: CommandOption[]
+}
+
+export enum ActionCharacterDrawState {
+  Normal,
+  onDamage,
+  onDead,
+  Win,
 }
 
 export type Skill = {

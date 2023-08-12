@@ -19,30 +19,36 @@ export type Option = {
 
 const EnemyInfo = ({ className }: Props) => {
   const context = useContext(Context)
-
-  const onClick = () =>
-    context?.updateActionCommand({
-      ...context.actionCommand,
-      target: {
-        type: CharacterType.Enemy,
-        index: 0,
-      },
-    })
+  if (!context) throw new Error('enemy context error')
 
   return (
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
-        <Button
-          className={'text-start'}
-          display={'バグA'}
-          onClick={onClick}
-          disabled={
-            !(
-              context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
-              context.battleState === BattleState.PlayerSelect
-            )
-          }
-        />
+        {context.enemies.map((e, i) => {
+          const onClick = () =>
+            context.updateActionCommand({
+              ...context.actionCommand,
+              target: {
+                type: CharacterType.Enemy,
+                index: i,
+              },
+            })
+
+          return (
+            <Button
+              key={i}
+              className={'text-start'}
+              display={e.name}
+              onClick={onClick}
+              disabled={
+                !(
+                  context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
+                  context.battleState === BattleState.PlayerSelect
+                )
+              }
+            />
+          )
+        })}
       </div>
     </div>
   )

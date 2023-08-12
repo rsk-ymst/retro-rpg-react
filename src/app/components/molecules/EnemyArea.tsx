@@ -1,7 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
-import Image from 'next/image'
 import React, { useContext } from 'react'
 import Enemy from './Enemy'
 import { Context } from '@/app/battle/context'
@@ -19,7 +17,7 @@ const EnemyArea = ({ className }: Props) => {
     <div className={`${className}`}>
       <div className='flex align-middle h-full items-center'>
         {enemies.map((e, i) => {
-          return <Enemy key={i} index={i} enemy={e}  />
+          return <Enemy key={i} index={i} enemy={e} />
         })}
       </div>
     </div>

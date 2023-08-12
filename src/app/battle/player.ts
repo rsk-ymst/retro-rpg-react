@@ -1,10 +1,11 @@
-import { ActionCharacter } from '../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../models/actionCharacter'
 import { CharacterType, FieldPlayer } from './context'
 
 export const testPlayerData: ActionCharacter[] = [
   {
     name: 'フェリス',
     type: 'FieldPlayer',
+    drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
       currentMagicPoint: 300,
@@ -30,6 +31,7 @@ export const testPlayerData: ActionCharacter[] = [
   {
     name: 'ゴーファー',
     type: 'FieldPlayer',
+    drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
       currentMagicPoint: 300,
@@ -55,6 +57,7 @@ export const testPlayerData: ActionCharacter[] = [
   {
     name: 'Linuxペンギン',
     type: 'FieldPlayer',
+    drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
       currentMagicPoint: 300,
@@ -80,6 +83,7 @@ export const testPlayerData: ActionCharacter[] = [
   {
     name: 'ドロイド',
     type: 'FieldPlayer',
+    drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
       currentMagicPoint: 300,

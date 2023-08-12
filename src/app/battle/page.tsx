@@ -83,19 +83,16 @@ const GameWindow = () => {
   const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
     if (!obj) throw new Error('Object')
 
-    if (obj.type === CharacterType.Enemy)
-      setCurrentEnemyIndex(obj.index)
-
-    if (obj.type === CharacterType.FieldPlayer)
-      setCurrentFieldPlayerIndex(obj.index)
+    if (obj.type === CharacterType.Enemy) setCurrentEnemyIndex(obj.index)
+    if (obj.type === CharacterType.FieldPlayer) setCurrentFieldPlayerIndex(obj.index)
   }
 
   const addEnemyCommand = () => {
-    enemies.map(() => {
+    enemies.forEach((e, i) => {
       const actionCommand: ActionCommand = {
         executer: {
           type: CharacterType.Enemy,
-          index: 0,
+          index: i,
         },
         target: {
           type: CharacterType.FieldPlayer,
@@ -103,6 +100,7 @@ const GameWindow = () => {
         },
         command: 'たたかう',
       }
+
       actionCommandQueue.push(actionCommand)
     })
   }
@@ -141,7 +139,7 @@ const GameWindow = () => {
       const execTransaction = async () => {
         await sleep(1000)
 
-        for (let index = 0; index < FIELD_PLAYER_NUMBER + 1; index++) {
+        for (let index = 0; index < fieldPlayers.length + enemies.length; index++) {
           const command = actionCommandQueue.shift()
           if (!command) return
 
@@ -176,7 +174,7 @@ const GameWindow = () => {
           await sleep(1000)
 
           targetEntity.status.onDamage = false
-          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? targetEntity : e)))
+          updateCharacterStatus(targetIdentifier, targetEntity)
         }
 
         setCurrentFieldPlayerIndex(-1)
