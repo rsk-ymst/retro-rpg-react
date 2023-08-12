@@ -43,6 +43,20 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
             alt={''}
             className={`${className}`}
           />
+        ) : fieldCharacter.status.currentHitPoint <= 0 ? (
+          <motion.div
+            initial={{ opacity: 1 }}
+            whileInView={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+          >
+            <Image
+              src={`/images/${characterName}/onDamage.png`}
+              height={64}
+              width={64}
+              alt={''}
+              className={`${className}`}
+            />
+          </motion.div>
         ) : (
           <Image
             src={`/images/${characterName}/index.png`}
@@ -53,15 +67,16 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
           />
         ))}
 
-      {context?.battleState === BattleState.PlayerWin && (
-        <Image
-          src={`/images/${characterName}/win.gif`}
-          height={64}
-          width={64}
-          alt={''}
-          className={`${className}`}
-        />
-      )}
+      {context?.battleState === BattleState.PlayerWin &&
+        fieldCharacter.status.currentHitPoint > 0 && (
+          <Image
+            src={`/images/${characterName}/win.gif`}
+            height={64}
+            width={64}
+            alt={''}
+            className={`${className}`}
+          />
+        )}
     </>
   )
 }
