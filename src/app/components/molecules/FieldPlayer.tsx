@@ -34,15 +34,25 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
         </motion.div>
       )}
       {(context?.battleState === BattleState.PlayerSelect ||
-        context?.battleState === BattleState.ActionTransaction) && (
-        <Image
-          src={`/images/${characterName}/index.png`}
-          height={64}
-          width={64}
-          alt={''}
-          className={`${className}`}
-        />
-      )}
+        context?.battleState === BattleState.ActionTransaction) &&
+        (fieldCharacter.status.onDamage ? (
+          <Image
+            src={`/images/${characterName}/onDamage.png`}
+            height={64}
+            width={64}
+            alt={''}
+            className={`${className}`}
+          />
+        ) : (
+          <Image
+            src={`/images/${characterName}/index.png`}
+            height={64}
+            width={64}
+            alt={''}
+            className={`${className}`}
+          />
+        ))}
+
       {context?.battleState === BattleState.PlayerWin && (
         <Image
           src={`/images/${characterName}/win.gif`}
