@@ -16,12 +16,13 @@ export type characterOption = {
 
 const BasicOptions = ({ options, className }: Props) => {
   const context = useContext(Context)
+  if (!context) throw new Error('BasicOptions context error')
 
   const characterOptions = [options, options, options, options]
-  const charactersIdx = context?.currentFieldPlayerIndex || 0
+  const charactersIdx = context.currentFieldPlayerIndex
 
   const isFocus =
-    context?.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
+    context.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
     context.battleState === BattleState.PlayerSelect
 
   return (

@@ -1,11 +1,12 @@
 import { createContext } from 'react'
 import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
-import { ActionCharacter } from '../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../models/actionCharacter'
 
 export const Context = createContext<GameContext>(null)
 
 export type GameContext = {
   currentFieldPlayerIndex: number
+  currentEnemyIndex: number
 
   fieldPlayers: ActionCharacter[]
   enemies: ActionCharacter[]
@@ -181,6 +182,34 @@ export const testEnemy: ActionCharacter = {
     experiencePoint: 0,
   },
   commandOptions: [],
+  drawState: ActionCharacterDrawState.Normal,
 }
 
-export const testEnemyData: ActionCharacter[] = [testEnemy]
+export const testEnemy2: ActionCharacter = {
+  name: 'バグB',
+  type: 'Enemy',
+  status: {
+    currentHitPoint: 300,
+    currentMagicPoint: 300,
+    condition: '通常',
+    command: 'たたかう',
+    onDamage: false,
+  },
+  parameter: {
+    attack: 100,
+    vitality: 100,
+    defense: 100,
+    intelligence: 100,
+    hitPoint: 1000,
+    magicPoint: 500,
+    speed: 100,
+    level: 0,
+    specialAttack: 0,
+    specialDefense: 0,
+    experiencePoint: 0,
+  },
+  commandOptions: [],
+  drawState: ActionCharacterDrawState.Normal,
+}
+
+export const testEnemyData: ActionCharacter[] = [testEnemy, testEnemy2]

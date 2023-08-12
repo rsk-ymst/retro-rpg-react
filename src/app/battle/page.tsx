@@ -41,7 +41,7 @@ const GameWindow = () => {
   const [enterGame, setEnterGame] = useState<boolean>(true)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
 
-  const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(0)
+  const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
 
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
@@ -80,12 +80,52 @@ const GameWindow = () => {
       setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
   }
 
+  const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
+    if (!obj) throw new Error('Object')
+
+    if (obj.type === CharacterType.Enemy) setCurrentEnemyIndex(obj.index)
+    if (obj.type === CharacterType.FieldPlayer) setCurrentFieldPlayerIndex(obj.index)
+  }
+
+  const searchValidTarget = (identifier?: ActionCharacterIdentifier) => {
+    if (!identifier) throw new Error('Object')
+
+    var validIndex = 0
+
+    if (identifier.type === CharacterType.Enemy) {
+      enemies.forEach((e, i) => {
+        if (e.status.currentHitPoint > 0) validIndex = i
+      })
+    }
+
+    if (identifier.type === CharacterType.FieldPlayer) {
+      fieldPlayers.forEach((e, i) => {
+        if (e.status.currentHitPoint > 0) validIndex = i
+      })
+    }
+
+    return validIndex
+  }
+
+  const isExtinctEnemies = () => {
+    return enemies.filter((e) => e.status.currentHitPoint > 0).length == 0
+  }
+
+  const validQueueLength = () => {
+    return (
+      enemies.filter((e) => e.status.currentHitPoint > 0).length +
+      fieldPlayers.filter((e) => e.status.currentHitPoint > 0).length
+    )
+  }
+
   const addEnemyCommand = () => {
-    enemies.map(() => {
+    enemies.forEach((e, i) => {
+      if (e.status.currentHitPoint <= 0) return
+
       const actionCommand: ActionCommand = {
         executer: {
           type: CharacterType.Enemy,
-          index: 0,
+          index: i,
         },
         target: {
           type: CharacterType.FieldPlayer,
@@ -93,6 +133,7 @@ const GameWindow = () => {
         },
         command: 'たたかう',
       }
+
       actionCommandQueue.push(actionCommand)
     })
   }
@@ -130,8 +171,9 @@ const GameWindow = () => {
 
       const execTransaction = async () => {
         await sleep(1000)
+        const validLength = validQueueLength()
 
-        for (let index = 0; index < FIELD_PLAYER_NUMBER + 1; index++) {
+        for (let index = 0; index < validLength; index++) {
           const command = actionCommandQueue.shift()
           if (!command) return
 
@@ -140,11 +182,21 @@ const GameWindow = () => {
           if (!executerIdentifier || !targetIdentifier) return
 
           const executerEntity = fetchFieldEntity(executerIdentifier)
-          const targetEntity = fetchFieldEntity(targetIdentifier)
+          let targetEntity = fetchFieldEntity(targetIdentifier)
           if (!executerEntity || !targetEntity) return
 
-          if (executerEntity.type === 'FieldPlayer')
-            setCurrentFieldPlayerIndex(executerIdentifier.index)
+          /* トランザクション中に死亡したキャラは飛ばす */
+          if (executerEntity.status.currentHitPoint <= 0) continue
+
+          /* 無効な攻撃対象を選択した場合は有効な対象に変更  */
+          if (targetEntity.status.currentHitPoint <= 0) {
+            targetIdentifier.index = searchValidTarget(targetIdentifier)
+            targetEntity = fetchFieldEntity(targetIdentifier)
+          }
+
+          setFocusCharacterIndex(executerIdentifier)
+          // if (executerEntity.type === 'FieldPlayer')
+          //   setCurrentFieldPlayerIndex(executerIdentifier.index)
 
           await sleep(1000)
           ATTACK_SE.play()
@@ -155,7 +207,7 @@ const GameWindow = () => {
 
           updateCharacterStatus(targetIdentifier, targetEntity)
 
-          if (targetEntity.type === 'Enemy' && targetEntity.status.currentHitPoint <= 0) {
+          if (isExtinctEnemies()) {
             await sleep(2000)
             setBattleState(BattleState.PlayerWin)
             return
@@ -165,7 +217,7 @@ const GameWindow = () => {
           await sleep(1000)
 
           targetEntity.status.onDamage = false
-          setEnemies(enemies.map((e, i) => (i == command?.target?.index ? targetEntity : e)))
+          updateCharacterStatus(targetIdentifier, targetEntity)
         }
 
         setCurrentFieldPlayerIndex(-1)
@@ -180,6 +232,7 @@ const GameWindow = () => {
     }
 
     if (battleState == BattleState.PlayerSelect) {
+      setCurrentEnemyIndex(-1) // 敵フォーカスを無効に
       setCurrentFieldPlayerIndex(0)
       setUIFocus(UIFocusStatus.BASIC_OPTIONS)
       setActionCommandQueue([])
@@ -212,9 +265,16 @@ const GameWindow = () => {
    */
   useEffect(() => {
     if (battleState === BattleState.ActionTransaction) return
+    if (currentFieldPlayerIndex === -1) return
 
     if (currentFieldPlayerIndex == 4) {
       setCurrentFieldPlayerIndex(-1)
+      return
+    }
+
+    if (fieldPlayers[currentFieldPlayerIndex].status.currentHitPoint <= 0) {
+      setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
+      return
     }
 
     setActionCommand({
@@ -256,6 +316,7 @@ const GameWindow = () => {
 
   const initialContext: GameContext = {
     currentFieldPlayerIndex,
+    currentEnemyIndex,
     fieldPlayers,
     enemies,
     actionCommand,
