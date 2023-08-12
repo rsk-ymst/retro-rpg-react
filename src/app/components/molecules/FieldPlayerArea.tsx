@@ -11,8 +11,10 @@ export type Props = {
 
 const FieldPlayerArea = ({ className }: Props) => {
   const context = useContext(Context)
+  if (!context) throw new Error("field player context error")
 
-  const currentFieldPlayerIndex = context?.currentFieldPlayerIndex
+  const fieldPlayers = context.fieldPlayers
+  const currentFieldPlayerIndex = context.currentFieldPlayerIndex
 
   return (
     <div className={`${className}`}>
@@ -31,7 +33,7 @@ const FieldPlayerArea = ({ className }: Props) => {
                     </div>
                   )}
 
-                <FieldPlayer characterName={name} className={`${marginForFocus} mt-5`} />
+                <FieldPlayer characterName={name} className={`${marginForFocus} mt-5`} fieldCharacter={fieldPlayers[i]} />
               </div>
             )
           })}
