@@ -41,7 +41,7 @@ const GameWindow = () => {
   const [enterGame, setEnterGame] = useState<boolean>(true)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
 
-  const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(0)
+  const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
 
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
@@ -78,6 +78,16 @@ const GameWindow = () => {
 
     if (obj.type === CharacterType.FieldPlayer)
       setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+  }
+
+  const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
+    if (!obj) throw new Error('Object')
+
+    if (obj.type === CharacterType.Enemy)
+      setCurrentEnemyIndex(obj.index)
+
+    if (obj.type === CharacterType.FieldPlayer)
+      setCurrentFieldPlayerIndex(obj.index)
   }
 
   const addEnemyCommand = () => {
@@ -143,8 +153,9 @@ const GameWindow = () => {
           const targetEntity = fetchFieldEntity(targetIdentifier)
           if (!executerEntity || !targetEntity) return
 
-          if (executerEntity.type === 'FieldPlayer')
-            setCurrentFieldPlayerIndex(executerIdentifier.index)
+          setFocusCharacterIndex(executerIdentifier)
+          // if (executerEntity.type === 'FieldPlayer')
+          //   setCurrentFieldPlayerIndex(executerIdentifier.index)
 
           await sleep(1000)
           ATTACK_SE.play()
@@ -180,6 +191,7 @@ const GameWindow = () => {
     }
 
     if (battleState == BattleState.PlayerSelect) {
+      setCurrentEnemyIndex(-1) // 敵フォーカスを無効に
       setCurrentFieldPlayerIndex(0)
       setUIFocus(UIFocusStatus.BASIC_OPTIONS)
       setActionCommandQueue([])
@@ -256,6 +268,7 @@ const GameWindow = () => {
 
   const initialContext: GameContext = {
     currentFieldPlayerIndex,
+    currentEnemyIndex,
     fieldPlayers,
     enemies,
     actionCommand,

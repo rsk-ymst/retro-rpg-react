@@ -6,6 +6,7 @@ export const Context = createContext<GameContext>(null)
 
 export type GameContext = {
   currentFieldPlayerIndex: number
+  currentEnemyIndex: number
 
   fieldPlayers: ActionCharacter[]
   enemies: ActionCharacter[]
