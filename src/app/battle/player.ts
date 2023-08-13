@@ -55,7 +55,7 @@ export const testPlayerData: ActionCharacter[] = [
     commandOptions: [],
   },
   {
-    name: 'Linuxペンギン',
+    name: 'タックス',
     type: 'FieldPlayer',
     drawState: ActionCharacterDrawState.Normal,
     status: {

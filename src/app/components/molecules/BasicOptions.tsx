@@ -6,7 +6,6 @@ import { Context, CharacterType, UIFocusStatus, BattleState } from '@/app/battle
 
 export type Props = {
   className?: string
-  options: characterOption[]
 }
 
 export type characterOption = {
@@ -14,12 +13,40 @@ export type characterOption = {
   onClick: () => void
 }
 
-const BasicOptions = ({ options, className }: Props) => {
+const BasicOptions = ({ className }: Props) => {
   const context = useContext(Context)
   if (!context) throw new Error('BasicOptions context error')
 
-  const characterOptions = [options, options, options, options]
-  const charactersIdx = context.currentFieldPlayerIndex
+  const characterOptions: characterOption[] = [
+    {
+      commandName: 'たたかう',
+      onClick: () => {
+        context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
+        context.updateActionCommand({ ...context.actionCommand, command: 'たたかう' })
+      },
+    },
+    {
+      commandName: 'スキル',
+      onClick: () => {
+        context.updateUIFocusStatus(UIFocusStatus.SKILLS)
+        context.updateActionCommand({ ...context.actionCommand, command: 'スキル' })
+      },
+    },
+    {
+      commandName: 'どうぐ',
+      onClick: () => {
+        context.updateUIFocusStatus(UIFocusStatus.ITEM_LIST)
+        context.updateActionCommand({ ...context.actionCommand, command: 'どうぐ' })
+      },
+    },
+    {
+      commandName: 'にげる',
+      onClick: () => {
+        context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
+        context.updateActionCommand({ ...context.actionCommand, command: 'にげる' })
+      },
+    },
+  ]
 
   const isFocus =
     context.UIFocus === UIFocusStatus.BASIC_OPTIONS &&
@@ -32,7 +59,7 @@ const BasicOptions = ({ options, className }: Props) => {
           isFocus ? 'text-white' : 'text-gray-500'
         } font-bold`}
       >
-        {characterOptions[charactersIdx >= 0 ? charactersIdx : 0].map((option, key) => {
+        {characterOptions.map((option, key) => {
           return (
             <Button
               key={key}

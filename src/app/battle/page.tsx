@@ -118,6 +118,10 @@ const GameWindow = () => {
     )
   }
 
+  const getAliveFieldPlayerCount = () => {
+    return fieldPlayers.filter((e) => e.status.currentHitPoint > 0).length
+  }
+
   const addEnemyCommand = () => {
     enemies.forEach((e, i) => {
       if (e.status.currentHitPoint <= 0) return
@@ -267,16 +271,19 @@ const GameWindow = () => {
     if (battleState === BattleState.ActionTransaction) return
     if (currentFieldPlayerIndex === -1) return
 
+    /* 全てのフィールドプレイヤのコマンド選択もしくは実行が終われば、一度フォーカスを無効にする */
     if (currentFieldPlayerIndex == 4) {
       setCurrentFieldPlayerIndex(-1)
       return
     }
 
+    /* 死亡したフィールドプレイヤのコマンド選択は行わない */
     if (fieldPlayers[currentFieldPlayerIndex].status.currentHitPoint <= 0) {
       setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
       return
     }
 
+    /* フィールドプレイヤのコマンド選択が可能に */
     setActionCommand({
       ...actionCommand,
       executer: {
@@ -298,11 +305,14 @@ const GameWindow = () => {
 
     // ターゲット決定 => コマンド確定
     if (actionCommand?.target !== undefined) {
+
       actionCommandQueue.push(actionCommand)
+      setActionCommandQueue(actionCommandQueue)
+
       console.log('pushed actionCommand', actionCommandQueue)
 
       // キャラクタ全員のコマンドが決定したら、stateを切り替える
-      if (actionCommandQueue.length >= 4) {
+      if (actionCommandQueue.length === getAliveFieldPlayerCount()) {
         setCurrentFieldPlayerIndex(-1) // フィールドキャラクタのフォーカスを一時キャンセルする
         setBattleState(BattleState.ActionTransaction)
         return

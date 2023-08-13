@@ -68,7 +68,7 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
         ))}
 
       {context?.battleState === BattleState.PlayerWin &&
-        fieldCharacter.status.currentHitPoint > 0 && (
+        (fieldCharacter.status.currentHitPoint > 0 ? (
           <Image
             src={`/images/${characterName}/win.gif`}
             height={64}
@@ -76,7 +76,10 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
             alt={''}
             className={`${className}`}
           />
-        )}
+        ) : (
+          // 幅間調整のためのダミー
+          <div className={`bg-transparent h-[64px] w-[64px] ${className}`} />
+        ))}
     </>
   )
 }

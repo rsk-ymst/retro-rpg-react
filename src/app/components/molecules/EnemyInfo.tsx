@@ -1,6 +1,5 @@
 'use client'
 
-import { motion } from 'framer-motion'
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
 import { Context, UIFocusStatus, CharacterType, BattleState } from '@/app/battle/context'
