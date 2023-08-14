@@ -1,5 +1,5 @@
 # ファイナル・コンピュータマスコット(仮)
-![Alt text](image.png)
+![Alt text](public/image.png)
 ※画面は開発中のものです
 
 ## コンセプト
