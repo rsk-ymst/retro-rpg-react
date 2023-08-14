@@ -1,35 +1,34 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ファイナル・コンピュータマスコット(仮)
+![Alt text](image.png)
+※画面は開発中のものです
 
-## Getting Started
+## コンセプト
+- プログラミングのマスコットキャラクタがバグを退治するレトロRPG風ソーシャルゲーム
+- 敵とのコマンドバトルを繰り返して、キャラクタの育成を楽しむ
+- サーバサイドと連携して、ユーザ及びキャラクタ情報を管理
 
-First, run the development server:
+## 担当
+以下の全てを@rsk-ymstが担当しました。
+- プログラム
+- ピクセルイラスト
+    - 敵モンスター
+    - マスコットキャラクタ
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## 技術
+- 言語: TypeScript
+- フレームワーク: Next.js Tailwind CSS
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## お借りした素材
+- 戦闘画面背景: OKUMONO 様, https://sozaino.site/archives/7632
+- SE: 効果音ラボ 様, https://soundeffect-lab.info/
+- 戦闘BGM: 魔王魂 様, https://maou.audio/category/game/game-battle/
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 諸注意
+- 本レポジトリの公開は、ソースコードの公開を目的としたものであり、借用した素材の再配布を目的としたものではございません
+- 商用公開は考えておらず、ゲーム内で金銭のやりとりは発生しません。
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## ライセンス
+ゲーム内で使用されているプログラミング言語のマスコットキャラクタは、以下のライセンスに従って使用されています。これらのキャラクタは開発者(@rsk-ymst)自身による創作物ではなく、各キャラクタの著作権はそれぞれの作者に帰属します。
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
-# retro-rpg-react
+- The Go gopher: マスコットキャラクタ "Go gopher" は Renée French によってデザインされました。
+- Android ロボット: "Android ロボット" は Google が作成し、提供している作品から複製または変更されており、クリエイティブ・コモンズ表示 3.0 ライセンスに従って使用されています。
