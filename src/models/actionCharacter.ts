@@ -9,6 +9,9 @@ export type ActionCharacter = {
   commandOptions: CommandOption[]
 }
 
+/**
+ * 戦闘中に変化するキャラクタの描画状態を管理するステート
+ */
 export enum ActionCharacterDrawState {
   Normal,
   onDamage,
@@ -36,7 +39,9 @@ export type CommandOption = {
   onClick: () => void
 }
 
-// string部分はのちに型変更
+/**
+ * 戦闘中に変化するキャラクタの要素
+ */
 export type BattleVariableStatus = {
   currentHitPoint: number
   currentMagicPoint: number // どのコマンドを実行するのか
@@ -45,15 +50,16 @@ export type BattleVariableStatus = {
   onDamage: boolean
 }
 
+/**
+ * レベルに応じて定義付けられるキャラクタのパラメータ
+ */
 export type CharacterParameter = {
   level: number // レベル
   attack: number // 攻撃力
   specialAttack: number
   defense: number
   specialDefense: number
-  vitality: number
   speed: number
-  intelligence: number
   hitPoint: number
   magicPoint: number
   experiencePoint: number

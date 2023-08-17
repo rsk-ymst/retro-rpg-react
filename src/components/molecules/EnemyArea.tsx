@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react'
 import Enemy from './Enemy'
-import { Context } from '@/app/battle/context'
+import { Context } from '@/game/context'
 
 export type Props = {
   className?: string

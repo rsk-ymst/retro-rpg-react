@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import BasicOptions from '../molecules/BasicOptions'
 import EnemyInfo from '../molecules/EnemyInfo'
 import UserInfo from '../molecules/UserInfo'
-import { Context } from '@/app/battle/context'
+import { Context } from '@/game/context'
 
 export type Props = {
   className: string

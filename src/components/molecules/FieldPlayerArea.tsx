@@ -3,7 +3,7 @@
 import Image from 'next/image'
 import React, { useContext } from 'react'
 import FieldPlayer from './FieldPlayer'
-import { BattleState, Context } from '@/app/battle/context'
+import { BattleState, Context } from '@/game/context'
 
 export type Props = {
   className?: string

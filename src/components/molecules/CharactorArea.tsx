@@ -1,9 +1,9 @@
 'use client'
 
-import Image from "next/image";
+import Image from 'next/image'
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context } from '@/app/battle/context'
+import { Context } from '@/game/context'
 
 export type Props = {
   className?: string
