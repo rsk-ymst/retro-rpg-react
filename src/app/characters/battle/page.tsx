@@ -4,11 +4,11 @@ import './style.css'
 import localFont from 'next/font/local'
 import Head from 'next/head'
 import { useEffect, useState } from 'react'
-import BattleBar from '../../components/organisms/BattleBar'
-import BattleField from '../../components/organisms/BattleField'
-import CommandMenu from '../../components/organisms/CommandMenu'
-import { ActionCharacter } from '../../models/actionCharacter'
-import { ATTACK_SE } from '../../utils/sound'
+import { ActionCharacter } from '../../../models/actionCharacter'
+import BattleBar from '../components/organisms/BattleBar'
+import BattleField from '../components/organisms/BattleField'
+import CommandMenu from '../components/organisms/CommandMenu'
+import { ATTACK_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -343,14 +343,14 @@ const GameWindow = () => {
         <link />
       </Head>
       <main className={myFont.className}>
-        {/* <div className='flex justify-center m-4'>
-          <div className='bg-black w-[960px] h-[540px]'> */}
-        <div className='flex justify-center flex-col items-center'>
-          <BattleBar className={'w-[920px] h-[50px] mt-2'} />
-          <BattleField className={'w-[920px] h-[350px]'} />
-          <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
-          {/* </div>
-          </div> */}
+        <div className='flex justify-center m-4'>
+          <div className='bg-black w-[960px] h-[540px]'>
+            <div className='flex justify-center flex-col items-center'>
+              <BattleBar className={'w-[920px] h-[50px] mt-2'} />
+              <BattleField className={'w-[920px] h-[350px]'} />
+              <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
+            </div>
+          </div>
         </div>
       </main>
     </Context.Provider>

@@ -1,4 +1,4 @@
-import { ActionCharacter, ActionCharacterDrawState } from '../../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../../../models/actionCharacter'
 import { CharacterType, FieldPlayer } from './context'
 
 export const testPlayerData: ActionCharacter[] = [

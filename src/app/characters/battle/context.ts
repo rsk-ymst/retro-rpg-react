@@ -1,6 +1,6 @@
 import { createContext } from 'react'
-import FieldPlayerArea from '../../components/molecules/FieldPlayerArea'
-import { ActionCharacter, ActionCharacterDrawState } from '../../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../../../models/actionCharacter'
+import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
 
 export const Context = createContext<GameContext>(null)
 
