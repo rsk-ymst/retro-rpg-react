@@ -3,8 +3,8 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
-import { Context } from '@/app/battle/context'
-import { ActionCharacter } from '@/app/models/actionCharacter'
+import { Context } from '@/game/context'
+import { ActionCharacter } from '@/models/actionCharacter'
 import './enemy.css'
 
 export type Props = {

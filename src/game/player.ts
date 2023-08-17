@@ -15,9 +15,7 @@ export const testPlayerData: ActionCharacter[] = [
     },
     parameter: {
       attack: 80,
-      vitality: 100,
       defense: 100,
-      intelligence: 100,
       hitPoint: 1000,
       magicPoint: 500,
       speed: 50,
@@ -41,9 +39,7 @@ export const testPlayerData: ActionCharacter[] = [
     },
     parameter: {
       attack: 20,
-      vitality: 100,
       defense: 100,
-      intelligence: 100,
       hitPoint: 1000,
       magicPoint: 500,
       speed: 60,
@@ -67,9 +63,7 @@ export const testPlayerData: ActionCharacter[] = [
     },
     parameter: {
       attack: 30,
-      vitality: 100,
       defense: 100,
-      intelligence: 100,
       hitPoint: 1000,
       magicPoint: 500,
       speed: 70,
@@ -93,9 +87,7 @@ export const testPlayerData: ActionCharacter[] = [
     },
     parameter: {
       attack: 50,
-      vitality: 100,
       defense: 100,
-      intelligence: 100,
       hitPoint: 1000,
       magicPoint: 500,
       speed: 90,

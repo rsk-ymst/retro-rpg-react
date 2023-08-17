@@ -1,5 +1,4 @@
 import { createContext } from 'react'
-import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
 import { ActionCharacter, ActionCharacterDrawState } from '../models/actionCharacter'
 
 export const Context = createContext<GameContext>(null)
@@ -170,9 +169,7 @@ export const testEnemy: ActionCharacter = {
   },
   parameter: {
     attack: 100,
-    vitality: 100,
     defense: 100,
-    intelligence: 100,
     hitPoint: 1000,
     magicPoint: 500,
     speed: 100,
@@ -197,9 +194,7 @@ export const testEnemy2: ActionCharacter = {
   },
   parameter: {
     attack: 100,
-    vitality: 100,
     defense: 100,
-    intelligence: 100,
     hitPoint: 1000,
     magicPoint: 500,
     speed: 100,
