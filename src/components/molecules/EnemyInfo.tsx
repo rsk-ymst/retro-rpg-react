@@ -22,7 +22,7 @@ const EnemyInfo = ({ className }: Props) => {
 
   return (
     <div className={`${className}`}>
-      <div className='flex flex-col mt-2 ml-4 text-white font-bold'>
+      <div className='flex flex-col mt-2 text-white font-bold'>
         {context.enemies.map((e, i) => {
           const onClick = () =>
             context.updateActionCommand({
@@ -42,7 +42,8 @@ const EnemyInfo = ({ className }: Props) => {
               disabled={
                 !(
                   context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
-                  context.battleState === BattleState.PlayerSelect
+                  context.battleState === BattleState.PlayerSelect &&
+                  e.status.currentHitPoint > 0
                 )
               }
             />

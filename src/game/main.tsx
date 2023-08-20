@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ActionCharacter } from '../models/actionCharacter'
+import { ActionCharacter } from '../models/ActionCharacter'
 import { ATTACK_SE } from '../utils/sound'
 import {
   ActionCommand,
@@ -188,10 +188,8 @@ const useGameContext = () => {
           }
 
           setFocusCharacterIndex(executerIdentifier)
-          // if (executerEntity.type === 'FieldPlayer')
-          //   setCurrentFieldPlayerIndex(executerIdentifier.index)
 
-          await sleep(1000)
+          await sleep(800)
           ATTACK_SE.play()
 
           const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
@@ -206,7 +204,6 @@ const useGameContext = () => {
             return
           }
 
-          // console.log('enemyに100ダメージ!', enemies[command.target?.index || 0].status)
           await sleep(1000)
 
           targetEntity.status.onDamage = false

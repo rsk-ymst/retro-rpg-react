@@ -1,5 +1,6 @@
 import { createContext } from 'react'
-import { ActionCharacter, ActionCharacterDrawState } from '../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
+import { SkillType } from '@/models/Skill'
 
 export const Context = createContext<GameContext>(null)
 
@@ -42,21 +43,6 @@ export type ActionCharacterIdentifier = {
   index: number
 }
 
-export type Skill = {
-  name: string
-  type: SkillType
-  power: number
-  consumeMagicPoint: number
-  description: string
-}
-
-enum SkillType {
-  PhysicalAttack,
-  SpecialAttack,
-  Healing,
-  Defence,
-}
-
 export type CommandOption = {
   commandName: string
   onClick: () => void
@@ -78,7 +64,7 @@ export type Enemy = {
 // string部分はのちに型変更
 export type FieldPlayerStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
 } | null
@@ -86,7 +72,7 @@ export type FieldPlayerStatus = {
 // string部分はのちに型変更
 export type EnemyStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
   onDamage: boolean
@@ -95,7 +81,7 @@ export type EnemyStatus = {
 // string部分はのちに型変更
 export type CharacterStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
   onDamage: boolean
@@ -109,7 +95,7 @@ export type FieldPlayerParameter = {
   defense: number
   intelligence: number
   maxHitPoint: number
-  maxMagicPoint: number
+  maxSpecialPoint: number
 }
 
 export type CharacterParameter = {
@@ -122,7 +108,7 @@ export type CharacterParameter = {
   speed: number
   intelligence: number
   hitPoint: number
-  magicPoint: number
+  specialPoint: number
   experiencePoint: number
 }
 
@@ -133,7 +119,7 @@ export type EnemyParameter = {
   defense: number
   intelligence: number
   maxHitPoint: number
-  maxMagicPoint: number
+  maxSpecialPoint: number
 }
 
 export enum BattleState {
@@ -162,7 +148,7 @@ export const testEnemy: ActionCharacter = {
   type: 'Enemy',
   status: {
     currentHitPoint: 300,
-    currentMagicPoint: 300,
+    currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
@@ -170,14 +156,44 @@ export const testEnemy: ActionCharacter = {
   parameter: {
     attack: 100,
     defense: 100,
-    hitPoint: 1000,
-    magicPoint: 500,
+    hitPoint: 300,
+    specialPoint: 500,
     speed: 100,
     level: 0,
     specialAttack: 0,
     specialDefense: 0,
     experiencePoint: 0,
   },
+  skills: [
+    {
+      name: 'ライフタイム',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: '所有権',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: 'RAII',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: 'await',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+  ],
   commandOptions: [],
   drawState: ActionCharacterDrawState.Normal,
 }
@@ -187,7 +203,7 @@ export const testEnemy2: ActionCharacter = {
   type: 'Enemy',
   status: {
     currentHitPoint: 300,
-    currentMagicPoint: 300,
+    currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
@@ -195,8 +211,8 @@ export const testEnemy2: ActionCharacter = {
   parameter: {
     attack: 100,
     defense: 100,
-    hitPoint: 1000,
-    magicPoint: 500,
+    hitPoint: 300,
+    specialPoint: 500,
     speed: 100,
     level: 0,
     specialAttack: 0,
@@ -204,6 +220,36 @@ export const testEnemy2: ActionCharacter = {
     experiencePoint: 0,
   },
   commandOptions: [],
+  skills: [
+    {
+      name: 'ライフタイム',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: '所有権',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: 'RAII',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+    {
+      name: 'await',
+      type: SkillType.PhysicalAttack,
+      power: 450,
+      specialPointConsumption: 100,
+      description: '相手の時間を止める',
+    },
+  ],
   drawState: ActionCharacterDrawState.Normal,
 }
 

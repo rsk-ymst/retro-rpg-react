@@ -20,14 +20,10 @@ const GameWindow = () => {
         <link />
       </Head>
       <main className={myFont.className}>
-        {/* <div className='flex justify-center m-4'>
-          <div className='bg-black w-[960px] h-[540px]'> */}
         <div className='flex justify-center flex-col items-center'>
           <BattleBar className={'w-[920px] h-[50px] mt-2'} />
           <BattleField className={'w-[920px] h-[350px]'} />
           <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
-          {/* </div>
-          </div> */}
         </div>
       </main>
     </Context.Provider>

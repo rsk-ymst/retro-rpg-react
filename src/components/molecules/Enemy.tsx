@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
 import { Context } from '@/game/context'
-import { ActionCharacter } from '@/models/actionCharacter'
+import { ActionCharacter } from '@/models/ActionCharacter'
 import './enemy.css'
 
 export type Props = {

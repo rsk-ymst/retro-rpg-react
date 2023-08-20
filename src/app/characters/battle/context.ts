@@ -1,5 +1,5 @@
 import { createContext } from 'react'
-import { ActionCharacter, ActionCharacterDrawState } from '../../../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../../../models/ActionCharacter'
 import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
 
 export const Context = createContext<GameContext>(null)
@@ -47,7 +47,7 @@ export type Skill = {
   name: string
   type: SkillType
   power: number
-  consumeMagicPoint: number
+  specialPointConsumption: number
   description: string
 }
 
@@ -79,7 +79,7 @@ export type Enemy = {
 // string部分はのちに型変更
 export type FieldPlayerStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
 } | null
@@ -87,7 +87,7 @@ export type FieldPlayerStatus = {
 // string部分はのちに型変更
 export type EnemyStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
   onDamage: boolean
@@ -96,7 +96,7 @@ export type EnemyStatus = {
 // string部分はのちに型変更
 export type CharacterStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
   onDamage: boolean
@@ -110,7 +110,7 @@ export type FieldPlayerParameter = {
   defense: number
   intelligence: number
   maxHitPoint: number
-  maxMagicPoint: number
+  maxSpecialPoint: number
 }
 
 export type CharacterParameter = {
@@ -123,7 +123,7 @@ export type CharacterParameter = {
   speed: number
   intelligence: number
   hitPoint: number
-  magicPoint: number
+  specialPoint: number
   experiencePoint: number
 }
 
@@ -134,7 +134,7 @@ export type EnemyParameter = {
   defense: number
   intelligence: number
   maxHitPoint: number
-  maxMagicPoint: number
+  maxSpecialPoint: number
 }
 
 export enum BattleState {
@@ -163,7 +163,7 @@ export const testEnemy: ActionCharacter = {
   type: 'Enemy',
   status: {
     currentHitPoint: 300,
-    currentMagicPoint: 300,
+    currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
@@ -174,7 +174,7 @@ export const testEnemy: ActionCharacter = {
     defense: 100,
     intelligence: 100,
     hitPoint: 1000,
-    magicPoint: 500,
+    specialPoint: 500,
     speed: 100,
     level: 0,
     specialAttack: 0,
@@ -190,7 +190,7 @@ export const testEnemy2: ActionCharacter = {
   type: 'Enemy',
   status: {
     currentHitPoint: 300,
-    currentMagicPoint: 300,
+    currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
@@ -201,7 +201,7 @@ export const testEnemy2: ActionCharacter = {
     defense: 100,
     intelligence: 100,
     hitPoint: 1000,
-    magicPoint: 500,
+    specialPoint: 500,
     speed: 100,
     level: 0,
     specialAttack: 0,

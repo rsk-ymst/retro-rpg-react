@@ -1,4 +1,5 @@
 import { createContext } from 'react'
+import { Skill } from './Skill'
 
 export type ActionCharacter = {
   type: 'Enemy' | 'FieldPlayer' // どのプレイヤーの操作か
@@ -6,6 +7,7 @@ export type ActionCharacter = {
   drawState: ActionCharacterDrawState
   status: BattleVariableStatus
   parameter: CharacterParameter
+  skills: Skill[]
   commandOptions: CommandOption[]
 }
 
@@ -19,21 +21,6 @@ export enum ActionCharacterDrawState {
   Win,
 }
 
-export type Skill = {
-  name: string
-  type: SkillType
-  power: number
-  consumeMagicPoint: number
-  description: string
-}
-
-enum SkillType {
-  PhysicalAttack,
-  SpecialAttack,
-  Healing,
-  Defense,
-}
-
 export type CommandOption = {
   commandName: string
   onClick: () => void
@@ -44,7 +31,7 @@ export type CommandOption = {
  */
 export type BattleVariableStatus = {
   currentHitPoint: number
-  currentMagicPoint: number // どのコマンドを実行するのか
+  currentSpecialPoint: number // どのコマンドを実行するのか
   condition: '通常' | '毒' | '麻痺'
   command: string
   onDamage: boolean
@@ -61,6 +48,6 @@ export type CharacterParameter = {
   specialDefense: number
   speed: number
   hitPoint: number
-  magicPoint: number
+  specialPoint: number
   experiencePoint: number
 }

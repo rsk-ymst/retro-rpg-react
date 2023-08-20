@@ -1,6 +1,6 @@
 .custom-blink {
   animation: blink-fast 0.3s;
-  animation-iteration-count: 3;
+  animation-iteration-count: 2;
 }
 
 @keyframes blink-fast {

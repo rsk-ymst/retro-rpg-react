@@ -55,7 +55,7 @@ const BasicOptions = ({ className }: Props) => {
   return (
     <div className={`${className}`}>
       <div
-        className={`flex flex-col mt-2 ml-4 isFocus ${
+        className={`flex flex-col mt-2 isFocus ${
           isFocus ? 'text-white' : 'text-gray-500'
         } font-bold`}
       >

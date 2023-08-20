@@ -1,4 +1,4 @@
-import { ActionCharacter, ActionCharacterDrawState } from '../../../models/actionCharacter'
+import { ActionCharacter, ActionCharacterDrawState } from '../../../models/ActionCharacter'
 import { CharacterType, FieldPlayer } from './context'
 
 export const testPlayerData: ActionCharacter[] = [
@@ -8,7 +8,7 @@ export const testPlayerData: ActionCharacter[] = [
     drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
-      currentMagicPoint: 300,
+      currentSpecialPoint: 300,
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
@@ -19,7 +19,7 @@ export const testPlayerData: ActionCharacter[] = [
       defense: 100,
       intelligence: 100,
       hitPoint: 1000,
-      magicPoint: 500,
+      specialPoint: 500,
       speed: 50,
       level: 0,
       specialAttack: 0,
@@ -34,7 +34,7 @@ export const testPlayerData: ActionCharacter[] = [
     drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
-      currentMagicPoint: 300,
+      currentSpecialPoint: 300,
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
@@ -45,7 +45,7 @@ export const testPlayerData: ActionCharacter[] = [
       defense: 100,
       intelligence: 100,
       hitPoint: 1000,
-      magicPoint: 500,
+      specialPoint: 500,
       speed: 60,
       level: 0,
       specialAttack: 0,
@@ -60,7 +60,7 @@ export const testPlayerData: ActionCharacter[] = [
     drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
-      currentMagicPoint: 300,
+      currentSpecialPoint: 300,
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
@@ -71,7 +71,7 @@ export const testPlayerData: ActionCharacter[] = [
       defense: 100,
       intelligence: 100,
       hitPoint: 1000,
-      magicPoint: 500,
+      specialPoint: 500,
       speed: 70,
       level: 0,
       specialAttack: 0,
@@ -86,7 +86,7 @@ export const testPlayerData: ActionCharacter[] = [
     drawState: ActionCharacterDrawState.Normal,
     status: {
       currentHitPoint: 300,
-      currentMagicPoint: 300,
+      currentSpecialPoint: 300,
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
@@ -97,7 +97,7 @@ export const testPlayerData: ActionCharacter[] = [
       defense: 100,
       intelligence: 100,
       hitPoint: 1000,
-      magicPoint: 500,
+      specialPoint: 500,
       speed: 90,
       level: 0,
       specialAttack: 0,
