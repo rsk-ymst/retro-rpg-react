@@ -28,15 +28,24 @@ export type ActionCommandQueue = ActionCommand[]
 export enum CharacterType {
   Enemy,
   FieldPlayer,
+  AllEnemy,
+  AllFieldPlayer,
 }
 
 // string部分はのちに型変更
 export type ActionCommand = {
   executer?: ActionCharacterIdentifier // どのプレイヤーの操作か
-  target?: ActionCharacterIdentifier // コマンドの実行対象は何か（敵, 見方）
+  target?: ActionCharacterIdentifier  // コマンドの実行対象は何か（敵, 見方）
   command?: string // どのコマンドを実行するのか
   content?: string // スキルや道具を用いる場合、その内容は何か
 } | null
+
+
+export enum AllTarget {
+  Enemy,
+  Player,
+  ActionPlayer
+}
 
 export type ActionCharacterIdentifier = {
   type: CharacterType

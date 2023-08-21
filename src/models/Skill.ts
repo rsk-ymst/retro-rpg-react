@@ -8,7 +8,11 @@ export type Skill = {
 
 export enum SkillType {
   PhysicalAttack,
+  PhysicalAllAttack,
+
   SpecialAttack,
+  SpecialAllAttack,
+
   Healing,
   Defense,
 }

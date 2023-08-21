@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
-import { ActionCharacter } from '../models/ActionCharacter'
-import { ATTACK_SE } from '../utils/sound'
+import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
+import { ATTACK_SE, CLEAR_BGM, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -10,6 +10,7 @@ import {
   ActionCharacterIdentifier,
   CharacterType,
   testEnemyData,
+  AllTarget,
 } from './context'
 
 import { testPlayerData } from './player'
@@ -67,6 +68,22 @@ const useGameContext = () => {
 
     if (obj.type === CharacterType.FieldPlayer)
       setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+
+    if (obj.type === CharacterType.AllFieldPlayer)
+      setFieldPlayers(
+        fieldPlayers.map((e) => {
+          e.status.onDamage = false
+          return e
+        }),
+      )
+
+    if (obj.type === CharacterType.AllEnemy)
+      setEnemies(
+        enemies.map((e) => {
+          e.status.onDamage = false
+          return e
+        }),
+      )
   }
 
   const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
@@ -123,7 +140,7 @@ const useGameContext = () => {
         target: {
           type: CharacterType.FieldPlayer,
           index: getRandomInt(0, 3),
-        },
+        } as ActionCharacterIdentifier,
         command: 'たたかう',
       }
 
@@ -143,6 +160,82 @@ const useGameContext = () => {
 
       return (nextObj?.parameter.speed || 0) - (curObj?.parameter.speed || 0)
     })
+  }
+
+  const targetAction = async (
+    executerIdentifier: ActionCharacterIdentifier,
+    targetIdentifier: ActionCharacterIdentifier,
+    command: ActionCommand,
+  ) => {
+    const executer = fetchFieldEntity(executerIdentifier)
+    let target = fetchFieldEntity(targetIdentifier)
+    if (!executer || !target) return
+
+    switch (command?.command) {
+      case 'たたかう': {
+        const damage = executer.parameter.attack
+        target.status.currentHitPoint -= damage || 0
+        target.status.onDamage = true
+
+        ATTACK_SE.play()
+        updateCharacterStatus(targetIdentifier, target)
+
+        return
+      }
+
+      case 'スキル': {
+        switch (command.target?.type) {
+          case CharacterType.FieldPlayer | CharacterType.Enemy: {
+            const damage = executer.parameter.attack
+            target.status.currentHitPoint -= damage || 0
+            target.status.onDamage = true
+
+            return
+          }
+
+          case CharacterType.AllFieldPlayer: {
+            const damage = 120
+            enemies.map((e) => {
+              e.status.currentHitPoint -= damage
+              e.status.onDamage = true
+            })
+
+            SPECIAL_SE.play()
+            setEnemies(enemies)
+            return
+          }
+
+          case CharacterType.AllEnemy: {
+            const damage = 120
+            enemies.map((e) => {
+              e.status.currentHitPoint -= damage
+              e.status.onDamage = true
+            })
+
+            SPECIAL_SE.play()
+            await sleep(1300)
+            ATTACK_SE.play()
+
+            setEnemies(enemies)
+            return
+          }
+        }
+      }
+
+      case 'どうぐ': {
+        // if (command.target === Target.AllEnemy) {
+        //   const damage = 120
+        //   enemies.map((e) => {
+        //     e.status.currentHitPoint -= damage
+        //     e.status.onDamage = true
+        //   })
+        // }
+
+        return
+      }
+    }
+
+    updateCharacterStatus(targetIdentifier, target)
   }
 
   /**
@@ -176,7 +269,7 @@ const useGameContext = () => {
 
           const executerEntity = fetchFieldEntity(executerIdentifier)
           let targetEntity = fetchFieldEntity(targetIdentifier)
-          if (!executerEntity || !targetEntity) return
+          if (!executerEntity) return
 
           /* トランザクション中に死亡したキャラは飛ばす */
           if (executerEntity.status.currentHitPoint <= 0) continue
@@ -190,13 +283,12 @@ const useGameContext = () => {
           setFocusCharacterIndex(executerIdentifier)
 
           await sleep(800)
-          ATTACK_SE.play()
 
-          const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
-          targetEntity.status.currentHitPoint -= damage || 0
-          targetEntity.status.onDamage = true
+          await targetAction(executerIdentifier, targetIdentifier, command)
 
-          updateCharacterStatus(targetIdentifier, targetEntity)
+          // const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
+          // targetEntity.status.currentHitPoint -= damage || 0
+          // targetEntity.status.onDamage = true
 
           if (isExtinctEnemies()) {
             await sleep(2000)
@@ -233,7 +325,9 @@ const useGameContext = () => {
 
     if (battleState == BattleState.PlayerWin) {
       MAIN_BGM.pause()
-      new Audio('/music/win.mp3').play()
+
+      CLEAR_BGM.volume = 0.5
+      CLEAR_BGM.play()
 
       return
     }

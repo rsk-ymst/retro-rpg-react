@@ -1,6 +1,5 @@
 import { createContext } from 'react'
 import { ActionCharacter, ActionCharacterDrawState } from '../../../models/ActionCharacter'
-import FieldPlayerArea from '../components/molecules/FieldPlayerArea'
 
 export const Context = createContext<GameContext>(null)
 
@@ -28,6 +27,8 @@ export type ActionCommandQueue = ActionCommand[]
 export enum CharacterType {
   Enemy,
   FieldPlayer,
+  AllEnemy,
+  AllFieldPlayer,
 }
 
 // string部分はのちに型変更
@@ -170,9 +171,7 @@ export const testEnemy: ActionCharacter = {
   },
   parameter: {
     attack: 100,
-    vitality: 100,
     defense: 100,
-    intelligence: 100,
     hitPoint: 1000,
     specialPoint: 500,
     speed: 100,
@@ -183,6 +182,7 @@ export const testEnemy: ActionCharacter = {
   },
   commandOptions: [],
   drawState: ActionCharacterDrawState.Normal,
+  skills: []
 }
 
 export const testEnemy2: ActionCharacter = {
@@ -197,9 +197,7 @@ export const testEnemy2: ActionCharacter = {
   },
   parameter: {
     attack: 100,
-    vitality: 100,
     defense: 100,
-    intelligence: 100,
     hitPoint: 1000,
     specialPoint: 500,
     speed: 100,
@@ -210,6 +208,7 @@ export const testEnemy2: ActionCharacter = {
   },
   commandOptions: [],
   drawState: ActionCharacterDrawState.Normal,
+  skills: []
 }
 
 export const testEnemyData: ActionCharacter[] = [testEnemy, testEnemy2]

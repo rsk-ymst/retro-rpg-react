@@ -3,6 +3,7 @@
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
 import { Context, UIFocusStatus, CharacterType, BattleState } from '@/game/context'
+import { SkillType } from '@/models/Skill'
 
 export type Props = {
   className?: string
@@ -28,7 +29,30 @@ const SkillList = ({ className }: Props) => {
         {fieldPlayerSkills.map((skill, i) => {
           return (
             <div key={i} className='flex'>
-              <Button className={'w-[200px]'} display={skill.name} />
+              <Button
+                className={'w-[200px]'}
+                display={skill.name}
+                onClick={() => {
+                  if (skill.type === SkillType.PhysicalAllAttack) {
+                    context.updateActionCommand({
+                      ...context.actionCommand,
+                      content: skill.name,
+                      target: {
+                        type: CharacterType.AllEnemy,
+                        index: 0,
+                      },
+                    })
+
+                    return
+                  }
+
+                  context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
+                  context.updateActionCommand({
+                    ...context.actionCommand,
+                    content: skill.name,
+                  })
+                }}
+              />
               <div className={'w-[200px]'}>{skill.description}</div>
               <div className={'w-[200px]'}>消費SP: {`${skill.specialPointConsumption}`}</div>
             </div>

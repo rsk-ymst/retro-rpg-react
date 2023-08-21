@@ -25,6 +25,7 @@ import {
 const myFont = localFont({ src: '../../../public/fonts/BestTen-CRT.otf' })
 
 import { testPlayerData } from './player'
+import { BGM_VOLUME } from '@/utils/sound'
 
 const FIELD_PLAYER_NUMBER = 4
 const MAIN_BGM = new Audio('/music/8bit.mp3')
@@ -55,7 +56,7 @@ const GameWindow = () => {
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
 
   useEffect(() => {
-    MAIN_BGM.volume = 0.2
+    MAIN_BGM.volume = BGM_VOLUME
     MAIN_BGM.play()
   }, [])
 
