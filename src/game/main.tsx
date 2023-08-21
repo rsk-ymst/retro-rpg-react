@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
+import { ActionCharacter } from '../models/ActionCharacter'
 import { ATTACK_SE, CLEAR_BGM, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
@@ -10,7 +10,6 @@ import {
   ActionCharacterIdentifier,
   CharacterType,
   testEnemyData,
-  AllTarget,
 } from './context'
 
 import { testPlayerData } from './player'
@@ -141,7 +140,7 @@ const useGameContext = () => {
           type: CharacterType.FieldPlayer,
           index: getRandomInt(0, 3),
         } as ActionCharacterIdentifier,
-        command: 'たたかう',
+        name: 'たたかう',
       }
 
       actionCommandQueue.push(actionCommand)
@@ -171,7 +170,7 @@ const useGameContext = () => {
     let target = fetchFieldEntity(targetIdentifier)
     if (!executer || !target) return
 
-    switch (command?.command) {
+    switch (command?.name) {
       case 'たたかう': {
         const damage = executer.parameter.attack
         target.status.currentHitPoint -= damage || 0
@@ -184,6 +183,8 @@ const useGameContext = () => {
       }
 
       case 'スキル': {
+        executer.status.currentSpecialPoint -= 100
+
         switch (command.target?.type) {
           case CharacterType.FieldPlayer | CharacterType.Enemy: {
             const damage = executer.parameter.attack

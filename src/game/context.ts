@@ -1,6 +1,6 @@
 import { createContext } from 'react'
 import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
-import { SkillType } from '@/models/Skill'
+import { Skill, SkillType } from '@/models/Skill'
 
 export const Context = createContext<GameContext>(null)
 
@@ -36,8 +36,8 @@ export enum CharacterType {
 export type ActionCommand = {
   executer?: ActionCharacterIdentifier // どのプレイヤーの操作か
   target?: ActionCharacterIdentifier  // コマンドの実行対象は何か（敵, 見方）
-  command?: string // どのコマンドを実行するのか
-  content?: string // スキルや道具を用いる場合、その内容は何か
+  name?: string // どのコマンドを実行するのか
+  content?: Skill // スキルや道具を用いる場合、その内容は何か
 } | null
 
 

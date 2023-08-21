@@ -22,28 +22,28 @@ const BasicOptions = ({ className }: Props) => {
       commandName: 'たたかう',
       onClick: () => {
         context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
-        context.updateActionCommand({ ...context.actionCommand, command: 'たたかう' })
+        context.updateActionCommand({ ...context.actionCommand, name: 'たたかう' })
       },
     },
     {
       commandName: 'スキル',
       onClick: () => {
         context.updateUIFocusStatus(UIFocusStatus.SKILLS)
-        context.updateActionCommand({ ...context.actionCommand, command: 'スキル' })
+        context.updateActionCommand({ ...context.actionCommand, name: 'スキル' })
       },
     },
     {
       commandName: 'どうぐ',
       onClick: () => {
         context.updateUIFocusStatus(UIFocusStatus.ITEM_LIST)
-        context.updateActionCommand({ ...context.actionCommand, command: 'どうぐ' })
+        context.updateActionCommand({ ...context.actionCommand, name: 'どうぐ' })
       },
     },
     {
       commandName: 'にげる',
       onClick: () => {
         context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
-        context.updateActionCommand({ ...context.actionCommand, command: 'にげる' })
+        context.updateActionCommand({ ...context.actionCommand, name: 'にげる' })
       },
     },
   ]
