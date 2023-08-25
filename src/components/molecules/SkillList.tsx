@@ -2,7 +2,7 @@
 
 import React, { useContext } from 'react'
 import Button from '../atoms/Button'
-import { Context, UIFocusStatus, CharacterType, BattleState } from '@/game/context'
+import { Context, UIFocusStatus, CharacterType } from '@/game/context'
 import { SkillType } from '@/models/Skill'
 
 export type Props = {
@@ -36,7 +36,7 @@ const SkillList = ({ className }: Props) => {
                   if (skill.type === SkillType.PhysicalAllAttack) {
                     context.updateActionCommand({
                       ...context.actionCommand,
-                      content: skill.name,
+                      content: skill,
                       target: {
                         type: CharacterType.AllEnemy,
                         index: 0,
@@ -49,7 +49,7 @@ const SkillList = ({ className }: Props) => {
                   context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
                   context.updateActionCommand({
                     ...context.actionCommand,
-                    content: skill.name,
+                    content: skill,
                   })
                 }}
               />
@@ -62,7 +62,7 @@ const SkillList = ({ className }: Props) => {
           display='もどる'
           onClick={() => {
             context.updateUIFocusStatus(UIFocusStatus.BASIC_OPTIONS)
-            context.updateActionCommand({ ...context.actionCommand, command: undefined })
+            context.updateActionCommand({ ...context.actionCommand, name: undefined })
           }}
         />
       </div>
