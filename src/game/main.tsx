@@ -62,27 +62,40 @@ const useGameContext = () => {
   }
 
   const updateCharacterStatus = (obj: ActionCharacterIdentifier, target: ActionCharacter) => {
-    if (obj.type === CharacterType.Enemy)
-      setEnemies(enemies.map((e, i) => (i === obj.index ? target : e)))
+    switch (obj.type) {
+      case CharacterType.FieldPlayer: {
+        setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+        return
+      }
 
-    if (obj.type === CharacterType.FieldPlayer)
-      setFieldPlayers(fieldPlayers.map((e, i) => (i === obj.index ? target : e)))
+      case CharacterType.Enemy: {
+        setEnemies(enemies.map((e, i) => (i === obj.index ? target : e)))
+        return
+      }
 
-    if (obj.type === CharacterType.AllFieldPlayer)
-      setFieldPlayers(
-        fieldPlayers.map((e) => {
-          e.status.onDamage = false
-          return e
-        }),
-      )
+      case CharacterType.AllFieldPlayer: {
+        setFieldPlayers(
+          fieldPlayers.map((e) => {
+            e.status.onDamage = false
+            return e
+          }),
+        )
+        return
+      }
 
-    if (obj.type === CharacterType.AllEnemy)
-      setEnemies(
-        enemies.map((e) => {
-          e.status.onDamage = false
-          return e
-        }),
-      )
+      case CharacterType.AllEnemy: {
+        setEnemies(
+          enemies.map((e) => {
+            e.status.onDamage = false
+            return e
+          }),
+        )
+        return
+      }
+
+      default:
+        return
+    }
   }
 
   const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
@@ -112,10 +125,16 @@ const useGameContext = () => {
     return validIndex
   }
 
+  /**
+   * 敵を全員倒したかを確認する
+   */
   const isExtinctEnemies = () => {
     return enemies.filter((e) => e.status.currentHitPoint > 0).length == 0
   }
 
+  /**
+   * 生存しているエンティティの数を取得する
+   */
   const validQueueLength = () => {
     return (
       enemies.filter((e) => e.status.currentHitPoint > 0).length +
@@ -161,6 +180,14 @@ const useGameContext = () => {
     })
   }
 
+  const effectDamage = (target: ActionCharacter, damage: number): ActionCharacter => {
+    target.status.currentHitPoint -= damage
+    target.status.onDamagePoint = damage
+    target.status.onDamage = true
+
+    return target
+  }
+
   const targetAction = async (
     executerIdentifier: ActionCharacterIdentifier,
     targetIdentifier: ActionCharacterIdentifier,
@@ -173,11 +200,10 @@ const useGameContext = () => {
     switch (command?.name) {
       case 'たたかう': {
         const damage = executer.parameter.attack
-        target.status.currentHitPoint -= damage || 0
-        target.status.onDamage = true
+        const effectedTarget = effectDamage(target, damage)
 
         ATTACK_SE.play()
-        updateCharacterStatus(targetIdentifier, target)
+        updateCharacterStatus(targetIdentifier, effectedTarget)
 
         return
       }
@@ -188,8 +214,9 @@ const useGameContext = () => {
         switch (command.target?.type) {
           case CharacterType.FieldPlayer | CharacterType.Enemy: {
             const damage = executer.parameter.attack
-            target.status.currentHitPoint -= damage || 0
-            target.status.onDamage = true
+
+            const effectedTarget = effectDamage(target, damage)
+            updateCharacterStatus(targetIdentifier, effectedTarget)
 
             return
           }
@@ -197,8 +224,7 @@ const useGameContext = () => {
           case CharacterType.AllFieldPlayer: {
             const damage = 120
             enemies.map((e) => {
-              e.status.currentHitPoint -= damage
-              e.status.onDamage = true
+              return effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
@@ -209,8 +235,7 @@ const useGameContext = () => {
           case CharacterType.AllEnemy: {
             const damage = 120
             enemies.map((e) => {
-              e.status.currentHitPoint -= damage
-              e.status.onDamage = true
+              return effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
@@ -300,6 +325,8 @@ const useGameContext = () => {
           await sleep(1000)
 
           targetEntity.status.onDamage = false
+          targetEntity.status.onDamagePoint = 0
+
           updateCharacterStatus(targetIdentifier, targetEntity)
         }
 

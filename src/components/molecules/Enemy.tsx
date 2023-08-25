@@ -59,7 +59,7 @@ const Enemy = ({ className, enemy, index }: Props) => {
             animate={{
               y: -50,
               transitionEnd: {
-                display: `${enemy.status.currentHitPoint <= 0 ? '' : 'none'}`, // 敵が複数いるときのレイアウト崩れを防ぐため。
+                display: `${enemy.status.currentHitPoint <= 0 ? '' : 'none'}`, // 敵が複数いるときのレイアウト崩れを防ぐ
               },
             }}
             initial={{ opacity: 1 }}
@@ -67,10 +67,12 @@ const Enemy = ({ className, enemy, index }: Props) => {
             transition={{ duration: 1.5 }}
             className={'font-bold text-white'}
           >
-            100
+            <div className='w-10'>
+              {enemy.status.onDamagePoint}
+            </div>
           </motion.div>
         ) : (
-          <div className='bg-transparent text-transparent'>100</div>
+          <div className='bg-transparent text-transparent w-10'>100</div>
         )}
       </div>
     </motion.div>

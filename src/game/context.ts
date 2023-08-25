@@ -161,6 +161,7 @@ export const testEnemy: ActionCharacter = {
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
+    onDamagePoint: 0
   },
   parameter: {
     attack: 100,
@@ -216,6 +217,7 @@ export const testEnemy2: ActionCharacter = {
     condition: '通常',
     command: 'たたかう',
     onDamage: false,
+    onDamagePoint: 0
   },
   parameter: {
     attack: 100,

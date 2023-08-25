@@ -35,6 +35,7 @@ export type BattleVariableStatus = {
   condition: '通常' | '毒' | '麻痺'
   command: string
   onDamage: boolean
+  onDamagePoint: number // 直近の被ダメージ値。被ダメージ値をUIに表示させるために必要
 }
 
 /**

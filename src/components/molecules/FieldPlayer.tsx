@@ -30,7 +30,7 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
           transition={{ duration: 1.5 }}
           className={'font-bold text-white'}
         >
-          100
+          {fieldCharacter.status.onDamagePoint}
         </motion.div>
       )}
       {(context?.battleState === BattleState.PlayerSelect ||

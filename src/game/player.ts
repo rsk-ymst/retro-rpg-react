@@ -13,6 +13,7 @@ export const testPlayerData: ActionCharacter[] = [
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
+      onDamagePoint: 0,
     },
     parameter: {
       attack: 80,
@@ -61,6 +62,7 @@ export const testPlayerData: ActionCharacter[] = [
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
+      onDamagePoint: 0,
     },
     parameter: {
       attack: 20,
@@ -101,6 +103,7 @@ export const testPlayerData: ActionCharacter[] = [
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
+      onDamagePoint: 0,
     },
     parameter: {
       attack: 30,
@@ -134,6 +137,7 @@ export const testPlayerData: ActionCharacter[] = [
       condition: '通常',
       command: 'たたかう',
       onDamage: false,
+      onDamagePoint: 0,
     },
     parameter: {
       attack: 50,
