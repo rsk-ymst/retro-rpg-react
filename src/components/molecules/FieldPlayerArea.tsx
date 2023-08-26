@@ -40,7 +40,7 @@ const FieldPlayerArea = ({ className }: Props) => {
                 <FieldPlayer
                   key={i}
                   characterName={name}
-                  className={`${marginForFocus} mt-5 `}
+                  className={`${marginForFocus} ${i === 0 ? '' : 'mt-5'} `}
                   fieldCharacter={fieldPlayers[i]}
                 />
               </div>

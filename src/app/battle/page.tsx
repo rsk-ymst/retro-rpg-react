@@ -19,11 +19,11 @@ const GameWindow = () => {
       <Head>
         <link />
       </Head>
-      <main className={myFont.className}>
-        <div className='flex justify-center flex-col items-center'>
+      <main className={`${myFont.className} bg-battle`}>
+        <div className='flex justify-center flex-col items-center bg-gray-400 bg-opacity-70'>
           <BattleBar className={'w-[920px] h-[50px] mt-2'} />
           <BattleField className={'w-[920px] h-[350px]'} />
-          <CommandMenu className={'w-[920px] h-[120px] mb-2'} />
+          <CommandMenu className={'w-[920px] h-[120px] mb-3'} />
         </div>
       </main>
     </Context.Provider>

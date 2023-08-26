@@ -9,8 +9,8 @@ export type Props = {
 
 const BattleField = ({ className }: Props) => {
   return (
-    <div className={`bg-gray-400 ${className} bg-battle `}>
-      <div className='flex h-full bg-gray-400 bg-opacity-70'>
+    <div className={`${className} `}>
+      <div className='flex h-full'>
         <EnemyArea className='h-full flex-1' />
         <FieldPlayerArea className='h-full flex-1' />
       </div>
