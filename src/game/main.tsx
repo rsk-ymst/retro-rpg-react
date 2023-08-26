@@ -13,6 +13,7 @@ import {
 } from './context'
 
 import { testPlayerData } from './player'
+import BattleBar from '@/components/organisms/BattleBar'
 
 const FIELD_PLAYER_NUMBER = 4
 const MAIN_BGM = new Audio('/music/8bit.mp3')
@@ -26,6 +27,7 @@ const getRandomInt = (min: number, max: number) => {
 
 const useGameContext = () => {
   // データ受信し、ここで初期値設定
+  const [battleBarContent, setBattleBarContent] = useState<string | undefined>(undefined)
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [enterGame, setEnterGame] = useState<boolean>(true)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
@@ -307,6 +309,7 @@ const useGameContext = () => {
           }
 
           setFocusCharacterIndex(executerIdentifier)
+          setBattleBarContent(command.content?.name)
 
           await sleep(800)
 
@@ -327,6 +330,7 @@ const useGameContext = () => {
           targetEntity.status.onDamage = false
           targetEntity.status.onDamagePoint = 0
 
+          setBattleBarContent(undefined)
           updateCharacterStatus(targetIdentifier, targetEntity)
         }
 
@@ -434,6 +438,7 @@ const useGameContext = () => {
   const initialContext: GameContext = {
     currentFieldPlayerIndex,
     currentEnemyIndex,
+    battleBarContent,
     fieldPlayers,
     enemies,
     actionCommand,

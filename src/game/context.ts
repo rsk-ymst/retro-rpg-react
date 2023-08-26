@@ -14,6 +14,7 @@ export type GameContext = {
   actionCommand: ActionCommand
   actionCommandQueue: ActionCommandQueue
 
+  battleBarContent?: string
   battleState: BattleState
   UIFocus: UIFocusStatus
 
