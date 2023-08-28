@@ -219,12 +219,13 @@ const useGameContext = () => {
         executer.status.currentSpecialPoint -= command.content?.specialPointConsumption || 0
 
         switch (command.target?.type) {
-          case CharacterType.FieldPlayer | CharacterType.Enemy: {
+          case CharacterType.Enemy: {
             const damage = executer.parameter.attack
 
             const effectedTarget = effectDamage(target, damage)
-            updateCharacterStatus(targetIdentifier, effectedTarget)
+            ATTACK_SE.play()
 
+            updateCharacterStatus(targetIdentifier, effectedTarget)
             return
           }
 

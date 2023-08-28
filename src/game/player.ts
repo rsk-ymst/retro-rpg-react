@@ -78,7 +78,7 @@ export const testPlayerData: ActionCharacter[] = [
     skills: [
       {
         name: 'ゴルーチン',
-        type: SkillType.PhysicalAttack,
+        type: SkillType.PhysicalAllAttack,
         power: 450,
         specialPointConsumption: 100,
         description: '敵全体にダメージを与える',

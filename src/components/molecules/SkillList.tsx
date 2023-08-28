@@ -47,11 +47,12 @@ const SkillList = ({ className }: Props) => {
 
                       return
                     }
-                    context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
+
                     context.updateActionCommand({
                       ...context.actionCommand,
                       content: skill,
                     })
+                    context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
                   }}
                 />
                 <div className={'w-[250px]'}>{skill.description}</div>
