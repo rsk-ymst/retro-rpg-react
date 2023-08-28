@@ -3,7 +3,7 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
-import { Context } from '@/game/context'
+import { BattleState, Context, UIFocusStatus } from '@/game/context'
 import { ActionCharacter } from '@/models/ActionCharacter'
 import './enemy.css'
 
@@ -18,7 +18,11 @@ const Enemy = ({ className, enemy, index }: Props) => {
   if (!context || !enemy) throw new Error('enemy context error')
 
   const currentEnemyIndex = context.currentEnemyIndex
-  const isFocus = currentEnemyIndex === index
+  const isIndexFocus = currentEnemyIndex === index
+
+  const isPlayerSelect = context.battleState === BattleState.PlayerSelect
+  const isEnemyInfoFocus = context.UIFocus === UIFocusStatus.ENEMY_INFO
+  const isActionTransaction = context.battleState === BattleState.ActionTransaction
 
   return (
     <motion.div
@@ -29,6 +33,11 @@ const Enemy = ({ className, enemy, index }: Props) => {
       className={'font-bold text-white'}
     >
       <div className={`${className} flex items-center`}>
+        {isPlayerSelect && isEnemyInfoFocus && isIndexFocus ? (
+          <Image src='/images/cursor2.png' height={30} width={30} alt={''} />
+        ) : (
+          <div className='bg-transparent text-transparent w-[30px] h-[30px]'></div>
+        )}
         {enemy.status.currentHitPoint > 0 && (
           <div className='flex flex-col items-center'>
             <div className='text-white font-bold flex mb-2'>
@@ -36,7 +45,7 @@ const Enemy = ({ className, enemy, index }: Props) => {
                 {enemy?.status.currentHitPoint} / {enemy.parameter.hitPoint}
               </div>
             </div>
-            <div className={isFocus ? 'custom-blink' : ''}>
+            <div className={isActionTransaction && isIndexFocus ? 'custom-blink' : ''}>
               <Image src='/images/enemy2.png' height={128} width={128} alt={''} />
             </div>
           </div>
@@ -67,12 +76,10 @@ const Enemy = ({ className, enemy, index }: Props) => {
             transition={{ duration: 1.5 }}
             className={'font-bold text-white'}
           >
-            <div className='w-10'>
-              {enemy.status.onDamagePoint}
-            </div>
+            <div className='w-[30px]'>{enemy.status.onDamagePoint}</div>
           </motion.div>
         ) : (
-          <div className='bg-transparent text-transparent w-10'>100</div>
+          <div className='bg-transparent text-transparent w-[30px]'>100</div>
         )}
       </div>
     </motion.div>

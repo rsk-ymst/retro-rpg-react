@@ -44,6 +44,7 @@ const useGameContext = () => {
   const updateBattleState = (value: BattleState) => setBattleState(value)
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
+  const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
 
   useEffect(() => {
     MAIN_BGM.volume = 0.2
@@ -232,8 +233,7 @@ const useGameContext = () => {
           case CharacterType.AllFieldPlayer: {
             const damage = 120
             fieldPlayers.map((e) => {
-              if (isAlive(e))
-                effectDamage(e, damage)
+              if (isAlive(e)) effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
@@ -244,8 +244,7 @@ const useGameContext = () => {
           case CharacterType.AllEnemy: {
             const damage = 120
             enemies.map((e) => {
-              if (isAlive(e))
-                effectDamage(e, damage)
+              if (isAlive(e)) effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
@@ -433,10 +432,13 @@ const useGameContext = () => {
       // キャラクタ全員のコマンドが決定したら、stateを切り替える
       if (actionCommandQueue.length === getAliveFieldPlayerCount()) {
         setCurrentFieldPlayerIndex(-1) // フィールドキャラクタのフォーカスを一時キャンセルする
+        setCurrentEnemyIndex(-1) // 敵のフォーカスを一時キャンセルする
+
         setBattleState(BattleState.ActionTransaction)
         return
       }
 
+      setCurrentEnemyIndex(-1) // 敵のフォーカスを一時キャンセルする
       setCurrentFieldPlayerIndex(currentFieldPlayerIndex + 1)
       setActionCommand(null) // コマンド内容を
       setUIFocus(UIFocusStatus.BASIC_OPTIONS)
@@ -456,6 +458,7 @@ const useGameContext = () => {
     updateBattleState,
     updateUIFocusStatus,
     updateActionCommand,
+    updateCurrentEnemyIndex,
   }
 
   return initialContext

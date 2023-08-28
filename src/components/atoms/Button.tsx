@@ -8,10 +8,11 @@ type Props = {
   onClick?: () => void
   display: string
   disabled?: boolean
+  onMouseEnter?: () => void
 }
 
-const Button = ({ onClick, className, display, disabled }: Props) => {
-  const onClick2 = () => {
+const Button = ({ onClick, className, display, disabled, onMouseEnter }: Props) => {
+  const onClickHandler = () => {
     if (onClick != undefined) {
       onClick()
     }
@@ -23,7 +24,12 @@ const Button = ({ onClick, className, display, disabled }: Props) => {
 
   return (
     <>
-      <button onClick={onClick2} className={`${className} flex group/edit`} disabled={disabled}>
+      <button
+        onClick={onClickHandler}
+        className={`${className} flex group/edit`}
+        disabled={disabled}
+        onMouseEnter={onMouseEnter}
+      >
         <span className={`invisible ${disabled ? '' : 'group-hover/edit:visible'} mt-1 mr-[1px]`}>
           <Image src={`/images/cursor2.png`} height={20} width={20} alt={''} />
         </span>

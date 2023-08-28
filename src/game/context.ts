@@ -22,6 +22,7 @@ export type GameContext = {
   updateBattleState: (value: BattleState) => void
   updateUIFocusStatus: (value: UIFocusStatus) => void
   updateActionCommand: (value: ActionCommand) => void
+  updateCurrentEnemyIndex: (value: number) => void
 } | null
 
 export type ActionCommandQueue = ActionCommand[]
