@@ -29,7 +29,7 @@ const CommandMenu = ({ className }: Props) => {
       )}
       {context.UIFocus === UIFocusStatus.SKILLS && (
         <>
-          <SkillList className='flex-[1.8] h-full' />
+          <SkillList className='h-full flex-[1.8]' />
         </>
       )}
       {context.UIFocus === UIFocusStatus.ITEM_LIST && (

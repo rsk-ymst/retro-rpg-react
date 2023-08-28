@@ -128,6 +128,11 @@ const useGameContext = () => {
   }
 
   /**
+   * 対象キャラクタが生存状態か確認する
+   */
+  const isAlive = (target: ActionCharacter) => target.status.currentHitPoint > 0
+
+  /**
    * 敵を全員倒したかを確認する
    */
   const isExtinctEnemies = () => {
@@ -211,7 +216,7 @@ const useGameContext = () => {
       }
 
       case 'スキル': {
-        executer.status.currentSpecialPoint -= 100
+        executer.status.currentSpecialPoint -= command.content?.specialPointConsumption || 0
 
         switch (command.target?.type) {
           case CharacterType.FieldPlayer | CharacterType.Enemy: {
@@ -225,8 +230,9 @@ const useGameContext = () => {
 
           case CharacterType.AllFieldPlayer: {
             const damage = 120
-            enemies.map((e) => {
-              return effectDamage(e, damage)
+            fieldPlayers.map((e) => {
+              if (isAlive(e))
+                effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
@@ -237,7 +243,8 @@ const useGameContext = () => {
           case CharacterType.AllEnemy: {
             const damage = 120
             enemies.map((e) => {
-              return effectDamage(e, damage)
+              if (isAlive(e))
+                effectDamage(e, damage)
             })
 
             SPECIAL_SE.play()
