@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
 import { BattleState, Context, UIFocusStatus } from '@/game/context'
-import { ActionCharacter } from '@/models/ActionCharacter'
+import { ActionCharacter, EffectType } from '@/models/ActionCharacter'
 import './enemy.css'
 
 export type Props = {
@@ -63,7 +63,7 @@ const Enemy = ({ className, enemy, index }: Props) => {
             <Image src='/images/enemy.png' height={128} width={128} alt={''} />
           </motion.div>
         )}
-        {enemy.status.onDamage ? (
+        {enemy.status.onEffect !== undefined ? (
           <motion.div
             animate={{
               y: -50,
@@ -76,7 +76,7 @@ const Enemy = ({ className, enemy, index }: Props) => {
             transition={{ duration: 1.5 }}
             className={'font-bold text-white'}
           >
-            <div className='w-[30px]'>{enemy.status.onDamagePoint}</div>
+            <div className='w-[30px]'>{enemy.status.onEffectPoint}</div>
           </motion.div>
         ) : (
           <div className='bg-transparent text-transparent w-[30px]'>100</div>

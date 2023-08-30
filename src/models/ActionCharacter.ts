@@ -16,7 +16,7 @@ export type ActionCharacter = {
  */
 export enum ActionCharacterDrawState {
   Normal,
-  onDamage,
+  onEffect,
   onDead,
   Win,
 }
@@ -34,8 +34,14 @@ export type BattleVariableStatus = {
   currentSpecialPoint: number // どのコマンドを実行するのか
   condition: '通常' | '毒' | '麻痺'
   command: string
-  onDamage: boolean
-  onDamagePoint: number // 直近の被ダメージ値。被ダメージ値をUIに表示させるために必要
+  onEffect?: EffectType
+  onEffectPoint: number // 直近の被ダメージ値。被ダメージ値をUIに表示させるために必要
+}
+
+export enum EffectType {
+  Damage,
+  HealingHP,
+  HealingSP,
 }
 
 /**

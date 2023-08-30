@@ -54,8 +54,8 @@ const EnemyInfo = ({ className }: Props) => {
                 display={e.name}
                 onClick={onClick}
                 onMouseEnter={() => context.updateCurrentEnemyIndex(i)}
-                disabled={
-                  !(
+                selectable={
+                  (
                     context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
                     context.battleState === BattleState.PlayerSelect &&
                     e.status.currentHitPoint > 0

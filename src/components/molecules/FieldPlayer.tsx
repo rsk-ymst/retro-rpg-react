@@ -4,7 +4,7 @@ import { motion } from 'framer-motion'
 import Image from 'next/image'
 import React, { useContext } from 'react'
 import { BattleState, Context } from '@/game/context'
-import { ActionCharacter } from '@/models/ActionCharacter'
+import { ActionCharacter, EffectType } from '@/models/ActionCharacter'
 
 export type Props = {
   className?: string
@@ -17,7 +17,7 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
 
   return (
     <>
-      {fieldCharacter.status.onDamage && (
+      {fieldCharacter.status.onEffect !== undefined && (
         <motion.div
           animate={{
             y: -50,
@@ -28,14 +28,22 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
           initial={{ opacity: 1 }}
           whileInView={{ opacity: 0 }}
           transition={{ duration: 1.5 }}
-          className={'font-bold text-white'}
+          className={`w-[30px] ${
+            fieldCharacter.status.onEffect === EffectType.Damage
+              ? 'text-white'
+              : fieldCharacter.status.onEffect === EffectType.HealingHP
+              ? 'text-green-300'
+              : fieldCharacter.status.onEffect === EffectType.HealingSP
+              ? 'text-blue-500'
+              : ''
+          }`}
         >
-          {fieldCharacter.status.onDamagePoint}
+          {fieldCharacter.status.onEffectPoint}
         </motion.div>
       )}
       {(context?.battleState === BattleState.PlayerSelect ||
         context?.battleState === BattleState.ActionTransaction) &&
-        (fieldCharacter.status.onDamage ? (
+        (fieldCharacter.status.onEffect === EffectType.Damage ? (
           <Image
             src={`/images/${characterName}/onDamage.png`}
             height={64}
@@ -50,7 +58,7 @@ const FieldPlayer = ({ characterName, className, fieldCharacter }: Props) => {
             transition={{ duration: 1.5 }}
           >
             <Image
-              src={`/images/${characterName}/onDamage.png`}
+              src={`/images/${characterName}/onEffect.png`}
               height={64}
               width={64}
               alt={''}

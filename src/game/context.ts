@@ -1,5 +1,6 @@
 import { createContext } from 'react'
 import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
+import { Item } from '@/models/Item'
 import { Skill, SkillType } from '@/models/Skill'
 
 export const Context = createContext<GameContext>(null)
@@ -17,6 +18,7 @@ export type GameContext = {
   battleBarContent?: string
   battleState: BattleState
   UIFocus: UIFocusStatus
+  items: Item[]
 
   /* 更新関数 */
   updateBattleState: (value: BattleState) => void
@@ -37,16 +39,15 @@ export enum CharacterType {
 // string部分はのちに型変更
 export type ActionCommand = {
   executer?: ActionCharacterIdentifier // どのプレイヤーの操作か
-  target?: ActionCharacterIdentifier  // コマンドの実行対象は何か（敵, 見方）
+  target?: ActionCharacterIdentifier // コマンドの実行対象は何か（敵, 見方）
   name?: string // どのコマンドを実行するのか
-  content?: Skill // スキルや道具を用いる場合、その内容は何か
+  content?: Skill | Item // スキルや道具を用いる場合、その内容は何か
 } | null
-
 
 export enum AllTarget {
   Enemy,
   Player,
-  ActionPlayer
+  ActionPlayer,
 }
 
 export type ActionCharacterIdentifier = {
@@ -86,7 +87,7 @@ export type EnemyStatus = {
   currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
-  onDamage: boolean
+  onEffect: boolean
 }
 
 // string部分はのちに型変更
@@ -95,7 +96,7 @@ export type CharacterStatus = {
   currentSpecialPoint: number // どのコマンドを実行するのか
   condition: string
   command: string
-  onDamage: boolean
+  onEffect: boolean
 }
 
 // string部分はのちに型変更
@@ -151,6 +152,7 @@ export enum UIFocusStatus {
   BASIC_OPTIONS,
   SKILLS,
   ENEMY_INFO,
+  USER_INFO,
   ITEM_LIST,
 }
 
@@ -162,8 +164,8 @@ export const testEnemy: ActionCharacter = {
     currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
-    onDamage: false,
-    onDamagePoint: 0
+    onEffect: undefined,
+    onEffectPoint: 0,
   },
   parameter: {
     attack: 100,
@@ -218,8 +220,8 @@ export const testEnemy2: ActionCharacter = {
     currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
-    onDamage: false,
-    onDamagePoint: 0
+    onEffect: undefined,
+    onEffectPoint: 0,
   },
   parameter: {
     attack: 100,

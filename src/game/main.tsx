@@ -1,6 +1,7 @@
+import { comma } from 'postcss/lib/list'
 import { useEffect, useState } from 'react'
-import { ActionCharacter } from '../models/ActionCharacter'
-import { ATTACK_SE, CLEAR_BGM, SPECIAL_SE } from '../utils/sound'
+import { ActionCharacter, EffectType } from '../models/ActionCharacter'
+import { ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -13,7 +14,7 @@ import {
 } from './context'
 
 import { testPlayerData } from './player'
-import BattleBar from '@/components/organisms/BattleBar'
+import { Item, ItemType, testItems } from '@/models/Item'
 
 const FIELD_PLAYER_NUMBER = 4
 const MAIN_BGM = new Audio('/music/8bit.mp3')
@@ -31,6 +32,7 @@ const useGameContext = () => {
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [enterGame, setEnterGame] = useState<boolean>(true)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
+  const [items, setItems] = useState<Item[]>(testItems)
 
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
@@ -79,7 +81,7 @@ const useGameContext = () => {
       case CharacterType.AllFieldPlayer: {
         setFieldPlayers(
           fieldPlayers.map((e) => {
-            e.status.onDamage = false
+            e.status.onEffect = undefined
             return e
           }),
         )
@@ -89,7 +91,7 @@ const useGameContext = () => {
       case CharacterType.AllEnemy: {
         setEnemies(
           enemies.map((e) => {
-            e.status.onDamage = false
+            e.status.onEffect = undefined
             return e
           }),
         )
@@ -188,10 +190,33 @@ const useGameContext = () => {
     })
   }
 
-  const effectDamage = (target: ActionCharacter, damage: number): ActionCharacter => {
-    target.status.currentHitPoint -= damage
-    target.status.onDamagePoint = damage
-    target.status.onDamage = true
+  const effectTarget = (
+    target: ActionCharacter,
+    point: number,
+    effect: EffectType,
+  ): ActionCharacter => {
+    target.status.currentSpecialPoint += point
+    if (target.parameter.specialPoint > target.status.currentSpecialPoint)
+      target.status.currentSpecialPoint = target.parameter.specialPoint
+
+    if (effect === EffectType.Damage) {
+      target.status.currentHitPoint -= point
+    }
+
+    if (effect === EffectType.HealingHP) {
+        target.status.currentHitPoint += point
+        if (target.parameter.hitPoint > target.status.currentHitPoint)
+          target.status.currentHitPoint = target.parameter.hitPoint
+    }
+
+    if (effect === EffectType.HealingSP) {
+      target.status.currentSpecialPoint += point
+      if (target.parameter.specialPoint > target.status.currentSpecialPoint)
+        target.status.currentSpecialPoint = target.parameter.specialPoint
+    }
+
+    target.status.onEffectPoint = point
+    target.status.onEffect = effect
 
     return target
   }
@@ -208,7 +233,7 @@ const useGameContext = () => {
     switch (command?.name) {
       case 'たたかう': {
         const damage = executer.parameter.attack
-        const effectedTarget = effectDamage(target, damage)
+        const effectedTarget = effectTarget(target, damage, EffectType.Damage)
 
         ATTACK_SE.play()
         updateCharacterStatus(targetIdentifier, effectedTarget)
@@ -217,13 +242,18 @@ const useGameContext = () => {
       }
 
       case 'スキル': {
+        if (command.content === undefined) throw new Error('expected skill set')
+
+        if (!('specialPointConsumption' in command.content))
+          throw new Error('not set specialPointConsumption')
+
         executer.status.currentSpecialPoint -= command.content?.specialPointConsumption || 0
 
         switch (command.target?.type) {
           case CharacterType.Enemy: {
             const damage = executer.parameter.attack
 
-            const effectedTarget = effectDamage(target, damage)
+            const effectedTarget = effectTarget(target, damage, EffectType.Damage)
             ATTACK_SE.play()
 
             updateCharacterStatus(targetIdentifier, effectedTarget)
@@ -233,7 +263,7 @@ const useGameContext = () => {
           case CharacterType.AllFieldPlayer: {
             const damage = 120
             fieldPlayers.map((e) => {
-              if (isAlive(e)) effectDamage(e, damage)
+              if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
             SPECIAL_SE.play()
@@ -244,7 +274,7 @@ const useGameContext = () => {
           case CharacterType.AllEnemy: {
             const damage = 120
             enemies.map((e) => {
-              if (isAlive(e)) effectDamage(e, damage)
+              if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
             SPECIAL_SE.play()
@@ -258,13 +288,31 @@ const useGameContext = () => {
       }
 
       case 'どうぐ': {
-        // if (command.target === Target.AllEnemy) {
-        //   const damage = 120
-        //   enemies.map((e) => {
-        //     e.status.currentHitPoint -= damage
-        //     e.status.onDamage = true
-        //   })
-        // }
+        if (command.content === undefined) throw new Error('expected item set')
+
+        const item = command.content
+        switch (item.type) {
+          case ItemType.HPHealing: {
+            const healingPoint = item.power
+
+            effectTarget(target, healingPoint, EffectType.HealingHP)
+            HEALING_SE.play()
+
+            updateCharacterStatus(targetIdentifier, target)
+            return
+          }
+
+          case ItemType.SPHealing: {
+            const damage = 120
+            fieldPlayers.map((e) => {
+              if (isAlive(e)) effectTarget(e, damage, EffectType.HealingHP)
+            })
+
+            SPECIAL_SE.play()
+            setEnemies(enemies)
+            return
+          }
+        }
 
         return
       }
@@ -324,7 +372,7 @@ const useGameContext = () => {
 
           // const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
           // targetEntity.status.currentHitPoint -= damage || 0
-          // targetEntity.status.onDamage = true
+          // targetEntity.status.onEffect = true
 
           if (isExtinctEnemies()) {
             await sleep(2000)
@@ -334,8 +382,8 @@ const useGameContext = () => {
 
           await sleep(1000)
 
-          targetEntity.status.onDamage = false
-          targetEntity.status.onDamagePoint = 0
+          targetEntity.status.onEffect = undefined
+          targetEntity.status.onEffectPoint = 0
 
           setBattleBarContent(undefined)
           updateCharacterStatus(targetIdentifier, targetEntity)
@@ -455,6 +503,7 @@ const useGameContext = () => {
     battleState,
     UIFocus,
     actionCommandQueue,
+    items,
     updateBattleState,
     updateUIFocusStatus,
     updateActionCommand,

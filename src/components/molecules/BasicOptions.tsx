@@ -66,7 +66,7 @@ const BasicOptions = ({ className }: Props) => {
               className={'text-start'}
               display={option.commandName}
               onClick={option.onClick}
-              disabled={!isFocus}
+              selectable={isFocus}
             />
           )
         })}

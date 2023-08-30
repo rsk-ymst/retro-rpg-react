@@ -3,6 +3,7 @@
 import { useContext } from 'react'
 import BasicOptions from '../molecules/BasicOptions'
 import EnemyInfo from '../molecules/EnemyInfo'
+import ItemList from '../molecules/ItemList'
 import SkillList from '../molecules/SkillList'
 import UserInfo from '../molecules/UserInfo'
 import { Context, UIFocusStatus } from '@/game/context'
@@ -20,6 +21,7 @@ const CommandMenu = ({ className }: Props) => {
       className={`flex bg-gradient-to-b from-blue-500 to-blue-700 rounded-lg border-2 border-t-red-50 ${className}`}
     >
       {(context.UIFocus === UIFocusStatus.BASIC_OPTIONS ||
+        context.UIFocus === UIFocusStatus.USER_INFO ||
         context.UIFocus === UIFocusStatus.ENEMY_INFO) && (
         <>
           <BasicOptions className='flex-[0.8] h-full' />
@@ -34,10 +36,9 @@ const CommandMenu = ({ className }: Props) => {
       )}
       {context.UIFocus === UIFocusStatus.ITEM_LIST && (
         <>
-          <BasicOptions className='flex-[1.8] h-full' />
+          <ItemList className='flex-[1.8] h-full' />
         </>
       )}
-
     </div>
   )
 }
