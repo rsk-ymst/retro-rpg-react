@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ActionCharacter, EffectType } from '../models/ActionCharacter'
 import { getRandomInt } from '../utils/math'
-import { MAIN_BGM, ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
+// import { MAIN_BGM, ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -40,9 +40,10 @@ const useGameContext = () => {
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
   const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
 
+
   useEffect(() => {
-    MAIN_BGM.volume = 0.2
-    MAIN_BGM.play()
+    // MAIN_BGM.volume = 0.2
+    // MAIN_BGM.play()
   }, [])
 
   /**
@@ -241,7 +242,7 @@ const useGameContext = () => {
         const damage = executer.parameter.attack
         const effectedTarget = effectTarget(target, damage, EffectType.Damage)
 
-        ATTACK_SE.play()
+        // ATTACK_SE.play()
         updateCharacterStatus(targetIdentifier, effectedTarget)
 
         return
@@ -260,7 +261,7 @@ const useGameContext = () => {
             const damage = executer.parameter.attack
 
             const effectedTarget = effectTarget(target, damage, EffectType.Damage)
-            ATTACK_SE.play()
+            // ATTACK_SE.play()
 
             updateCharacterStatus(targetIdentifier, effectedTarget)
             return
@@ -272,7 +273,7 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
-            SPECIAL_SE.play()
+            // SPECIAL_SE.play()
             setEnemies(enemies)
             return
           }
@@ -283,9 +284,9 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
-            SPECIAL_SE.play()
+            // SPECIAL_SE.play()
             await sleep(1300)
-            ATTACK_SE.play()
+            // ATTACK_SE.play()
 
             setEnemies(enemies)
             return
@@ -302,7 +303,7 @@ const useGameContext = () => {
             const healingPoint = item.power
 
             effectTarget(target, healingPoint, EffectType.HealingHP)
-            HEALING_SE.play()
+            // HEALING_SE.play()
 
             updateCharacterStatus(targetIdentifier, target)
             return
@@ -314,7 +315,7 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.HealingHP)
             })
 
-            SPECIAL_SE.play()
+            // SPECIAL_SE.play()
             setEnemies(enemies)
             return
           }
@@ -418,10 +419,10 @@ const useGameContext = () => {
     }
 
     if (battleState == BattleState.PlayerWin) {
-      MAIN_BGM.pause()
+      // MAIN_BGM.pause()
 
-      CLEAR_BGM.volume = 0.5
-      CLEAR_BGM.play()
+      // CLEAR_BGM.volume = 0.5
+      // CLEAR_BGM.play()
 
       return
     }

@@ -17,9 +17,9 @@ const Button = ({ onClick, className, display, selectable = true, onMouseEnter }
       onClick()
     }
 
-    const audio = new Audio('/sounds/decide.mp3')
-    audio.volume = 0.5
-    audio.play()
+    // const audio = new Audio('/sounds/decide.mp3')
+    // audio.volume = 0.5
+    // audio.play()
   }
 
   return (

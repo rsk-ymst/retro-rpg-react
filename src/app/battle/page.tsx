@@ -19,6 +19,7 @@ const GameWindow = () => {
       <Head>
         <link />
       </Head>
+      <audio id='audio' loop autoPlay src='/music/8bit.mp3'/>
       <main className={`${myFont.className} bg-battle`}>
         <div className='flex justify-center flex-col items-center bg-gray-400 bg-opacity-70'>
           <BattleBar className={'w-[920px] h-[50px] mt-2'} />
