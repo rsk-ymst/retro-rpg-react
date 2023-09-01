@@ -1,7 +1,7 @@
-import { comma } from 'postcss/lib/list'
 import { useEffect, useState } from 'react'
 import { ActionCharacter, EffectType } from '../models/ActionCharacter'
-import { ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
+import { getRandomInt } from '../utils/math'
+import { MAIN_BGM, ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -17,20 +17,12 @@ import { testPlayerData } from './player'
 import { Item, ItemType, testItems } from '@/models/Item'
 
 const FIELD_PLAYER_NUMBER = 4
-const MAIN_BGM = new Audio('/music/8bit.mp3')
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const getRandomInt = (min: number, max: number) => {
-  min = Math.ceil(min)
-  max = Math.floor(max)
-  return Math.floor(Math.random() * (max - min + 1)) + min
-}
 
 const useGameContext = () => {
   // データ受信し、ここで初期値設定
   const [battleBarContent, setBattleBarContent] = useState<string | undefined>(undefined)
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
-  const [enterGame, setEnterGame] = useState<boolean>(true)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
   const [items, setItems] = useState<Item[]>(testItems)
 
@@ -56,9 +48,7 @@ const useGameContext = () => {
   /**
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
    */
-  const fetchFieldEntity = (obj?: ActionCharacterIdentifier): ActionCharacter => {
-    if (!obj) throw new Error('Object')
-
+  const fetchFieldEntity = (obj: ActionCharacterIdentifier): ActionCharacter => {
     if (obj.type === CharacterType.Enemy) {
       return enemies[obj.index]
     } else {
@@ -110,7 +100,10 @@ const useGameContext = () => {
     if (obj.type === CharacterType.FieldPlayer) setCurrentFieldPlayerIndex(obj.index)
   }
 
-  const searchValidTarget = (identifier?: ActionCharacterIdentifier) => {
+  /**
+   * 生存状態のキャラクタを誰でもよいから取得する
+   */
+  const searchAliveTarget = (identifier?: ActionCharacterIdentifier) => {
     if (!identifier) throw new Error('Object')
 
     var validIndex = 0
@@ -156,6 +149,14 @@ const useGameContext = () => {
     return fieldPlayers.filter((e) => e.status.currentHitPoint > 0).length
   }
 
+  const clearFieldPlayerCommand = () => {
+    fieldPlayers.map((e) => {
+      e.status.command = undefined
+      return e
+    })
+    setFieldPlayers(fieldPlayers)
+  }
+
   const addEnemyCommand = () => {
     enemies.forEach((e, i) => {
       if (e.status.currentHitPoint <= 0) return
@@ -182,6 +183,7 @@ const useGameContext = () => {
   const sortActionCommandQueue = () => {
     actionCommandQueue.sort((cur, next) => {
       if (!cur || !next) return 0
+      if (!cur.executer || !next.executer) return 0
 
       const curObj = fetchFieldEntity(cur.executer)
       const nextObj = fetchFieldEntity(next.executer)
@@ -204,13 +206,17 @@ const useGameContext = () => {
     }
 
     if (effect === EffectType.HealingHP) {
-        target.status.currentHitPoint += point
-        if (target.parameter.hitPoint > target.status.currentHitPoint)
-          target.status.currentHitPoint = target.parameter.hitPoint
+      target.status.currentHitPoint += point
+
+      // 上限値を超える回復値を修正
+      if (target.parameter.hitPoint > target.status.currentHitPoint)
+        target.status.currentHitPoint = target.parameter.hitPoint
     }
 
     if (effect === EffectType.HealingSP) {
       target.status.currentSpecialPoint += point
+
+      // 上限値を超える回復値を修正
       if (target.parameter.specialPoint > target.status.currentSpecialPoint)
         target.status.currentSpecialPoint = target.parameter.specialPoint
     }
@@ -359,7 +365,7 @@ const useGameContext = () => {
 
           /* 無効な攻撃対象を選択した場合は有効な対象に変更  */
           if (targetEntity.status.currentHitPoint <= 0) {
-            targetIdentifier.index = searchValidTarget(targetIdentifier)
+            targetIdentifier.index = searchAliveTarget(targetIdentifier)
             targetEntity = fetchFieldEntity(targetIdentifier)
           }
 
@@ -401,6 +407,7 @@ const useGameContext = () => {
     }
 
     if (battleState == BattleState.PlayerSelect) {
+      clearFieldPlayerCommand()
       setCurrentEnemyIndex(-1) // 敵フォーカスを無効に
       setCurrentFieldPlayerIndex(0)
       setUIFocus(UIFocusStatus.BASIC_OPTIONS)

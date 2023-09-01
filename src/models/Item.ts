@@ -18,12 +18,5 @@ export const testItems = [
     power: 100,
     description: '味方のHPを100回復',
     count: 3,
-  },
-  {
-    name: 'エーテル',
-    type: ItemType.SPHealing,
-    power: 100,
-    description: '味方のSPを100回復',
-    count: 3,
-  },
+  }
 ]

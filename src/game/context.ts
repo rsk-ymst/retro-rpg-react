@@ -44,12 +44,6 @@ export type ActionCommand = {
   content?: Skill | Item // スキルや道具を用いる場合、その内容は何か
 } | null
 
-export enum AllTarget {
-  Enemy,
-  Player,
-  ActionPlayer,
-}
-
 export type ActionCharacterIdentifier = {
   type: CharacterType
   index: number
@@ -139,13 +133,6 @@ export enum BattleState {
   PlayerSelect,
   PlayerWin,
   GameOver,
-}
-
-export enum FocusPlayer {
-  A,
-  B,
-  C,
-  D,
 }
 
 export enum UIFocusStatus {

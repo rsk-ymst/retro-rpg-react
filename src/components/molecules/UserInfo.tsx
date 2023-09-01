@@ -54,7 +54,7 @@ const UserInfo = ({ className }: Props) => {
                     })
                   }}
                 />
-                <div className='flex-1'>{`${fp?.status?.currentHitPoint} / ${fp?.parameter.hitPoint}  `}</div>
+                <div className='flex-[0.8]'>{`${fp?.status?.currentHitPoint} / ${fp?.parameter.hitPoint}  `}</div>
                 <div className='flex-1'>{fp?.status?.command}</div>
               </div>
             </>

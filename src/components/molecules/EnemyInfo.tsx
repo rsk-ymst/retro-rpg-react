@@ -27,7 +27,12 @@ const EnemyInfo = ({ className }: Props) => {
     <div className={`${className}`}>
       <div className='flex flex-col mt-2 text-white font-bold'>
         {context.enemies.map((e, i) => {
-          const onClick = () =>
+          const onClick = () => {
+            context.fieldPlayers[context.currentFieldPlayerIndex].status.command =
+              context.actionCommand?.name === 'たたかう'
+                ? context.actionCommand?.name
+                : context.actionCommand?.content?.name || ''
+
             context.updateActionCommand({
               ...context.actionCommand,
               target: {
@@ -35,6 +40,7 @@ const EnemyInfo = ({ className }: Props) => {
                 index: i,
               },
             })
+          }
 
           return (
             <div
@@ -55,11 +61,9 @@ const EnemyInfo = ({ className }: Props) => {
                 onClick={onClick}
                 onMouseEnter={() => context.updateCurrentEnemyIndex(i)}
                 selectable={
-                  (
-                    context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
-                    context.battleState === BattleState.PlayerSelect &&
-                    e.status.currentHitPoint > 0
-                  )
+                  context?.UIFocus === UIFocusStatus.ENEMY_INFO &&
+                  context.battleState === BattleState.PlayerSelect &&
+                  e.status.currentHitPoint > 0
                 }
               />
             </div>
