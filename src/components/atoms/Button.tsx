@@ -1,7 +1,8 @@
 'use client'
 
 import Image from 'next/image'
-import React from 'react'
+import React, { useContext, useRef } from 'react'
+import { Context } from '@/game/context'
 
 type Props = {
   className?: string
@@ -12,14 +13,15 @@ type Props = {
 }
 
 const Button = ({ onClick, className, display, selectable = true, onMouseEnter }: Props) => {
+  const context = useContext(Context)
+  if (!context) throw new Error('BasicOptions context error')
+
   const onClickHandler = () => {
+    context.selectSERef.current?.play()
+
     if (onClick != undefined) {
       onClick()
     }
-
-    // const audio = new Audio('/sounds/decide.mp3')
-    // audio.volume = 0.5
-    // audio.play()
   }
 
   return (
@@ -31,7 +33,7 @@ const Button = ({ onClick, className, display, selectable = true, onMouseEnter }
         onMouseEnter={onMouseEnter}
       >
         <span className={`invisible ${selectable ? 'group-hover/edit:visible' : ''} mt-1 mr-[1px]`}>
-          <Image src={`/images/cursor2.png`} height={20} width={20} alt={''} />
+          <Image src={`/images/cursor.png`} height={20} width={20} alt={''} />
         </span>
         <div>{display}</div>
       </button>

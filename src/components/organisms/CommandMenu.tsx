@@ -20,6 +20,7 @@ const CommandMenu = ({ className }: Props) => {
     <div
       className={`flex bg-gradient-to-b from-blue-500 to-blue-700 rounded-lg border-2 border-t-red-50 ${className}`}
     >
+      <audio ref={context.selectSERef} src='/sounds/decide.mp3' />
       {(context.UIFocus === UIFocusStatus.BASIC_OPTIONS ||
         context.UIFocus === UIFocusStatus.USER_INFO ||
         context.UIFocus === UIFocusStatus.ENEMY_INFO) && (

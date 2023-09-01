@@ -34,7 +34,7 @@ const Enemy = ({ className, enemy, index }: Props) => {
     >
       <div className={`${className} flex items-center`}>
         {isPlayerSelect && isEnemyInfoFocus && isIndexFocus ? (
-          <Image src='/images/cursor2.png' height={30} width={30} alt={''} />
+          <Image src='/images/cursor.png' height={30} width={30} alt={''} />
         ) : (
           <div className='bg-transparent text-transparent w-[30px] h-[30px]'></div>
         )}

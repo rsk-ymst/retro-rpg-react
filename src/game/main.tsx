@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { ActionCharacter, EffectType } from '../models/ActionCharacter'
 import { getRandomInt } from '../utils/math'
 // import { MAIN_BGM, ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
@@ -40,6 +40,7 @@ const useGameContext = () => {
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
   const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
 
+  const selectSERef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
     // MAIN_BGM.volume = 0.2
@@ -516,6 +517,7 @@ const useGameContext = () => {
     updateUIFocusStatus,
     updateActionCommand,
     updateCurrentEnemyIndex,
+    selectSERef,
   }
 
   return initialContext

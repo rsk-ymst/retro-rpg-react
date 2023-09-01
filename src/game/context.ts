@@ -1,4 +1,4 @@
-import { createContext } from 'react'
+import { RefObject, createContext } from 'react'
 import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
 import { Item } from '@/models/Item'
 import { Skill, SkillType } from '@/models/Skill'
@@ -25,6 +25,8 @@ export type GameContext = {
   updateUIFocusStatus: (value: UIFocusStatus) => void
   updateActionCommand: (value: ActionCommand) => void
   updateCurrentEnemyIndex: (value: number) => void
+
+  selectSERef: RefObject<HTMLAudioElement>
 } | null
 
 export type ActionCommandQueue = ActionCommand[]

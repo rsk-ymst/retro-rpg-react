@@ -33,7 +33,7 @@ const FieldPlayerArea = ({ className }: Props) => {
                 {context?.battleState === BattleState.PlayerSelect &&
                   context.currentFieldPlayerIndex === i && (
                     <div>
-                      <Image src={`/images/cursor2.png`} height={30} width={30} alt={''} />
+                      <Image src={`/images/cursor.png`} height={30} width={30} alt={''} />
                     </div>
                   )}
 
