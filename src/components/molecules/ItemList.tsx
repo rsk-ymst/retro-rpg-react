@@ -31,6 +31,7 @@ const ItemList = ({ className }: Props) => {
                   className={'w-[200px]'}
                   display={item.name}
                   onClick={() => {
+                    context.fieldPlayers[context.currentFieldPlayerIndex].status.command = item.name
                     context.updateActionCommand({
                       ...context.actionCommand,
                       content: item,

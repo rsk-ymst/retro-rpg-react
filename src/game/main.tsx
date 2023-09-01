@@ -41,11 +41,13 @@ const useGameContext = () => {
   const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
 
   const selectSERef = useRef<HTMLAudioElement>(null)
+  const normalAttackSERef = useRef<HTMLAudioElement>(null)
+  const chargeSERef = useRef<HTMLAudioElement>(null)
+  const specialAttackSERef = useRef<HTMLAudioElement>(null)
+  const healingSERef = useRef<HTMLAudioElement>(null)
 
-  useEffect(() => {
-    // MAIN_BGM.volume = 0.2
-    // MAIN_BGM.play()
-  }, [])
+  const mainBGMRef = useRef<HTMLAudioElement>(null)
+  const winBGMRef = useRef<HTMLAudioElement>(null)
 
   /**
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
@@ -244,6 +246,7 @@ const useGameContext = () => {
         const effectedTarget = effectTarget(target, damage, EffectType.Damage)
 
         // ATTACK_SE.play()
+        normalAttackSERef.current?.play()
         updateCharacterStatus(targetIdentifier, effectedTarget)
 
         return
@@ -262,7 +265,10 @@ const useGameContext = () => {
             const damage = executer.parameter.attack
 
             const effectedTarget = effectTarget(target, damage, EffectType.Damage)
-            // ATTACK_SE.play()
+
+            chargeSERef.current?.play()
+            await sleep(1000)
+            normalAttackSERef.current?.play()
 
             updateCharacterStatus(targetIdentifier, effectedTarget)
             return
@@ -274,7 +280,7 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
-            // SPECIAL_SE.play()
+            specialAttackSERef.current?.play()
             setEnemies(enemies)
             return
           }
@@ -285,9 +291,9 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.Damage)
             })
 
-            // SPECIAL_SE.play()
+            specialAttackSERef.current?.play()
             await sleep(1300)
-            // ATTACK_SE.play()
+            normalAttackSERef.current?.play()
 
             setEnemies(enemies)
             return
@@ -303,8 +309,8 @@ const useGameContext = () => {
           case ItemType.HPHealing: {
             const healingPoint = item.power
 
+            healingSERef.current?.play()
             effectTarget(target, healingPoint, EffectType.HealingHP)
-            // HEALING_SE.play()
 
             updateCharacterStatus(targetIdentifier, target)
             return
@@ -316,7 +322,6 @@ const useGameContext = () => {
               if (isAlive(e)) effectTarget(e, damage, EffectType.HealingHP)
             })
 
-            // SPECIAL_SE.play()
             setEnemies(enemies)
             return
           }
@@ -420,10 +425,11 @@ const useGameContext = () => {
     }
 
     if (battleState == BattleState.PlayerWin) {
-      // MAIN_BGM.pause()
+      mainBGMRef.current?.pause()
 
-      // CLEAR_BGM.volume = 0.5
-      // CLEAR_BGM.play()
+      if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.5
+
+      winBGMRef.current?.play()
 
       return
     }
@@ -518,6 +524,12 @@ const useGameContext = () => {
     updateActionCommand,
     updateCurrentEnemyIndex,
     selectSERef,
+    normalAttackSERef,
+    chargeSERef,
+    specialAttackSERef,
+    healingSERef,
+    mainBGMRef,
+    winBGMRef,
   }
 
   return initialContext

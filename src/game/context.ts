@@ -27,6 +27,13 @@ export type GameContext = {
   updateCurrentEnemyIndex: (value: number) => void
 
   selectSERef: RefObject<HTMLAudioElement>
+  normalAttackSERef: RefObject<HTMLAudioElement>
+  chargeSERef: RefObject<HTMLAudioElement>
+  specialAttackSERef: RefObject<HTMLAudioElement>
+  healingSERef: RefObject<HTMLAudioElement>
+
+  mainBGMRef: RefObject<HTMLAudioElement>
+  winBGMRef: RefObject<HTMLAudioElement>
 } | null
 
 export type ActionCommandQueue = ActionCommand[]
@@ -149,7 +156,7 @@ export const testEnemy: ActionCharacter = {
   name: 'バグA',
   type: 'Enemy',
   status: {
-    currentHitPoint: 300,
+    currentHitPoint: 200,
     currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
@@ -159,7 +166,7 @@ export const testEnemy: ActionCharacter = {
   parameter: {
     attack: 100,
     defense: 100,
-    hitPoint: 300,
+    hitPoint: 200,
     specialPoint: 500,
     speed: 100,
     level: 0,
@@ -205,7 +212,7 @@ export const testEnemy2: ActionCharacter = {
   name: 'バグB',
   type: 'Enemy',
   status: {
-    currentHitPoint: 300,
+    currentHitPoint: 200,
     currentSpecialPoint: 300,
     condition: '通常',
     command: 'たたかう',
@@ -215,7 +222,7 @@ export const testEnemy2: ActionCharacter = {
   parameter: {
     attack: 100,
     defense: 100,
-    hitPoint: 300,
+    hitPoint: 200,
     specialPoint: 500,
     speed: 100,
     level: 0,

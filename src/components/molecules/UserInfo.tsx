@@ -32,6 +32,7 @@ const UserInfo = ({ className }: Props) => {
           return (
             <>
               <div
+                key={fp.name}
                 className={`flex justify-start w-full ${
                   isPlayerSelect &&
                   isUserInfoFocus &&

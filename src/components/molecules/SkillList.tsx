@@ -36,6 +36,7 @@ const SkillList = ({ className }: Props) => {
                   display={skill.name}
                   onClick={() => {
                     if (skill.type === SkillType.PhysicalAllAttack) {
+                      context.fieldPlayers[context.currentFieldPlayerIndex].status.command = skill.name
                       context.updateActionCommand({
                         ...context.actionCommand,
                         content: skill,
