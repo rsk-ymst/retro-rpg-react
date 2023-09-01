@@ -17,6 +17,10 @@ const Button = ({ onClick, className, display, selectable = true, onMouseEnter }
   if (!context) throw new Error('BasicOptions context error')
 
   const onClickHandler = () => {
+    /* 連続してSEを再生できるように */
+    if (context.selectSERef.current?.currentTime !== undefined)
+      context.selectSERef.current.currentTime = 0
+
     context.selectSERef.current?.play()
 
     if (onClick != undefined) {
