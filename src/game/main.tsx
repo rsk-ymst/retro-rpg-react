@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { ActionCharacter, EffectType } from '../models/ActionCharacter'
 import { getRandomInt } from '../utils/math'
-// import { MAIN_BGM, ATTACK_SE, CLEAR_BGM, HEALING_SE, SPECIAL_SE } from '../utils/sound'
 import {
   ActionCommand,
   ActionCommandQueue,
@@ -50,12 +49,19 @@ const useGameContext = () => {
   const winBGMRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
-    if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.4
-    if (selectSERef.current?.volume) selectSERef.current.volume = 0.8
-    if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.7
+    const lazy_init = async () => {
+      await sleep(2000)
 
-    console.log("init draw...")
-    mainBGMRef.current?.play()
+      if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.2
+      if (selectSERef.current?.volume) selectSERef.current.volume = 0.6
+      if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.7
+
+      console.log("init draw...")
+      mainBGMRef.current?.play()
+    }
+
+    lazy_init()
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
