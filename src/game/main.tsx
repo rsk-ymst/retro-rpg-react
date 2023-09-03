@@ -21,19 +21,19 @@ const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 const useGameContext = () => {
   // データ受信し、ここで初期値設定
   const [battleBarContent, setBattleBarContent] = useState<string | undefined>(undefined)
+  const [battleState, setBattleState] = useState<BattleState>(BattleState.PlayerSelect)
+  const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
+
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
-  const [items, setItems] = useState<Item[]>(testItems)
-  const [isPlayingBGM, setIsPlayingBGM] = useState<boolean>(false)
-
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
 
-  const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
+  const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
 
-  const [battleState, setBattleState] = useState<BattleState>(BattleState.PlayerSelect)
-  const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
+  const [items, setItems] = useState<Item[]>(testItems)
+  const [isPlayingBGM, setIsPlayingBGM] = useState<boolean>(false)
 
   const updateBattleState = (value: BattleState) => setBattleState(value)
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
@@ -54,12 +54,14 @@ const useGameContext = () => {
   useEffect(() => {
     /* 音量調整 */
     if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.2
-    if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.4
+    if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.3
     if (selectSERef.current?.volume) selectSERef.current.volume = 0.4
+    if (healingSERef.current?.volume) healingSERef.current.volume = 0.6
+    if (chargeSERef.current?.volume) chargeSERef.current.volume = 0.8
     if (normalAttackSERef.current?.volume) normalAttackSERef.current.volume = 0.8
     if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.5
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   /**
@@ -353,16 +355,16 @@ const useGameContext = () => {
    *======================================
    */
   useEffect(() => {
-    console.log('update battleState', battleState)
+    // console.log('update battleState', battleState)
 
     if (battleState == BattleState.ActionTransaction) {
-      console.log('before: ', actionCommandQueue[0]?.executer)
+      // console.log('before: ', actionCommandQueue[0]?.executer)
 
       /* ソート */
       addEnemyCommand()
       sortActionCommandQueue()
 
-      console.log('after: ', actionCommandQueue[0]?.executer?.index)
+      // console.log('after: ', actionCommandQueue[0]?.executer?.index)
 
       const execTransaction = async () => {
         await sleep(1000)
@@ -441,8 +443,7 @@ const useGameContext = () => {
       mainBGMRef.current?.pause()
       setBattleBarContent(undefined)
 
-      if (isPlayingBGM)
-        winBGMRef.current?.play()
+      if (isPlayingBGM) winBGMRef.current?.play()
 
       return
     }
@@ -454,7 +455,7 @@ const useGameContext = () => {
    *======================================
    */
   useEffect(() => {
-    console.log('update UIFocus', UIFocus)
+    // console.log('update UIFocus', UIFocus)
   }, [UIFocus])
 
   /**
@@ -487,7 +488,7 @@ const useGameContext = () => {
       },
     })
 
-    console.log('update currentFieldPlayerIndex', currentFieldPlayerIndex)
+    // console.log('update currentFieldPlayerIndex', currentFieldPlayerIndex)
   }, [currentFieldPlayerIndex])
 
   useEffect(() => {
@@ -496,14 +497,14 @@ const useGameContext = () => {
     if (currentFieldPlayerIndex >= FIELD_PLAYER_NUMBER) return
     if (actionCommand == null) return
 
-    console.log('update actionCommand', actionCommand)
+    // console.log('update actionCommand', actionCommand)
 
     // ターゲット決定 => コマンド確定
     if (actionCommand?.target !== undefined) {
       actionCommandQueue.push(actionCommand)
       setActionCommandQueue(actionCommandQueue)
 
-      console.log('pushed actionCommand', actionCommandQueue)
+      // console.log('pushed actionCommand', actionCommandQueue)
 
       // キャラクタ全員のコマンドが決定したら、stateを切り替える
       if (actionCommandQueue.length === getAliveFieldPlayerCount()) {

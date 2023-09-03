@@ -21,7 +21,7 @@ const FieldPlayerArea = ({ className }: Props) => {
       <div className='flex justify-center align-middle h-full'>
         <div className='w-full flex flex-col items-center mr-8'>
           {['ferris', 'gopher', 'tux', 'droid'].map((name, i) => {
-            console.log(`cur: ${context?.currentFieldPlayerIndex}`)
+            // console.log(`cur: ${context?.currentFieldPlayerIndex}`)
             const marginForFocus = i == currentFieldPlayerIndex ? 'mr-20' : undefined
 
             return (
