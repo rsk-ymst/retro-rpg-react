@@ -111,11 +111,11 @@ export const testPlayerData: ActionCharacter[] = [
     },
     skills: [
       {
-        name: 'seccomp',
+        name: 'サンドボックス',
         type: SkillType.PhysicalAttack,
         power: 450,
         specialPointConsumption: 100,
-        description: '特定の',
+        description: '敵１体に大ダメージ',
       },
     ],
     commandOptions: [],
@@ -149,7 +149,7 @@ export const testPlayerData: ActionCharacter[] = [
         type: SkillType.PhysicalAttack,
         power: 450,
         specialPointConsumption: 100,
-        description: '相手の時間を止める',
+        description: '敵１体に大ダメージ',
       },
     ],
     commandOptions: [],
