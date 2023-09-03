@@ -28,14 +28,14 @@ export const testPlayerData: ActionCharacter[] = [
     },
     skills: [
       {
-        name: '並列処理',
+        name: 'Mutex',
         type: SkillType.PhysicalAllAttack,
         power: 450,
         specialPointConsumption: 100,
         description: '敵全体にダメージ',
       },
       {
-        name: 'スピンロック',
+        name: 'RAII',
         type: SkillType.SpecialAllAttack,
         power: 450,
         specialPointConsumption: 150,
