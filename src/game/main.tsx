@@ -24,6 +24,7 @@ const useGameContext = () => {
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
   const [items, setItems] = useState<Item[]>(testItems)
+  const [isPlayingBGM, setIsPlayingBGM] = useState<boolean>(false)
 
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
@@ -38,6 +39,7 @@ const useGameContext = () => {
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
   const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
+  const updateIsPlayingBGM = (value: boolean) => setIsPlayingBGM(value)
 
   const selectSERef = useRef<HTMLAudioElement>(null)
   const normalAttackSERef = useRef<HTMLAudioElement>(null)
@@ -49,18 +51,12 @@ const useGameContext = () => {
   const winBGMRef = useRef<HTMLAudioElement>(null)
 
   useEffect(() => {
-    const lazy_init = async () => {
-      await sleep(2000)
-
-      if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.2
-      if (selectSERef.current?.volume) selectSERef.current.volume = 0.6
-      if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.7
-
-      console.log("init draw...")
-      mainBGMRef.current?.play()
-    }
-
-    lazy_init()
+    /* 音量調整 */
+    if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.2
+    if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.4
+    if (selectSERef.current?.volume) selectSERef.current.volume = 0.4
+    if (normalAttackSERef.current?.volume) normalAttackSERef.current.volume = 0.8
+    if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.5
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -442,10 +438,10 @@ const useGameContext = () => {
 
     if (battleState == BattleState.PlayerWin) {
       mainBGMRef.current?.pause()
+      setBattleBarContent(undefined)
 
-      if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.5
-
-      winBGMRef.current?.play()
+      if (isPlayingBGM)
+        winBGMRef.current?.play()
 
       return
     }
@@ -535,10 +531,12 @@ const useGameContext = () => {
     UIFocus,
     actionCommandQueue,
     items,
+    isPlayingBGM,
     updateBattleState,
     updateUIFocusStatus,
     updateActionCommand,
     updateCurrentEnemyIndex,
+    updateIsPlayingBGM,
     selectSERef,
     normalAttackSERef,
     chargeSERef,

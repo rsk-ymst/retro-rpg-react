@@ -1,4 +1,4 @@
-import { RefObject, createContext } from 'react'
+import { MutableRefObject, RefObject, createContext } from 'react'
 import { ActionCharacter, ActionCharacterDrawState } from '../models/ActionCharacter'
 import { Item } from '@/models/Item'
 import { Skill, SkillType } from '@/models/Skill'
@@ -19,12 +19,15 @@ export type GameContext = {
   battleState: BattleState
   UIFocus: UIFocusStatus
   items: Item[]
+  isPlayingBGM: boolean
 
   /* 更新関数 */
   updateBattleState: (value: BattleState) => void
   updateUIFocusStatus: (value: UIFocusStatus) => void
   updateActionCommand: (value: ActionCommand) => void
   updateCurrentEnemyIndex: (value: number) => void
+  updateIsPlayingBGM: (value: boolean) => void
+
 
   selectSERef: RefObject<HTMLAudioElement>
   normalAttackSERef: RefObject<HTMLAudioElement>
