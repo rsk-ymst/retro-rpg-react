@@ -27,6 +27,7 @@ export type GameContext = {
   updateActionCommand: (value: ActionCommand) => void
   updateCurrentEnemyIndex: (value: number) => void
   updateIsPlayingBGM: (value: boolean) => void
+  updateBattleBarContent: (value?: string) => void
 
 
   selectSERef: RefObject<HTMLAudioElement>

@@ -40,6 +40,7 @@ const useGameContext = () => {
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
   const updateCurrentEnemyIndex = (value: number) => setCurrentEnemyIndex(value)
   const updateIsPlayingBGM = (value: boolean) => setIsPlayingBGM(value)
+  const updateBattleBarContent = (value?: string) => setBattleBarContent(value)
 
   const selectSERef = useRef<HTMLAudioElement>(null)
   const normalAttackSERef = useRef<HTMLAudioElement>(null)
@@ -537,6 +538,7 @@ const useGameContext = () => {
     updateActionCommand,
     updateCurrentEnemyIndex,
     updateIsPlayingBGM,
+    updateBattleBarContent,
     selectSERef,
     normalAttackSERef,
     chargeSERef,

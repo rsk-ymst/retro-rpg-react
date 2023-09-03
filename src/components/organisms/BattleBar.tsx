@@ -1,5 +1,5 @@
 import { useContext } from 'react'
-import { Context } from '@/game/context'
+import { BattleState, Context } from '@/game/context'
 
 export type Props = {
   className: string
@@ -31,7 +31,9 @@ const BattleBar = ({ className }: Props) => {
                   context.mainBGMRef.current?.pause()
                   context.winBGMRef.current?.pause()
                 } else {
-                  context.mainBGMRef.current?.play()
+                  if (context.battleState === BattleState.PlayerWin)
+                    context.winBGMRef.current?.play()
+                  else context.mainBGMRef.current?.play()
                 }
 
                 context.updateIsPlayingBGM(!context.isPlayingBGM)

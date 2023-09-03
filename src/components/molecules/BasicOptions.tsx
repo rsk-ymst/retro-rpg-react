@@ -21,6 +21,7 @@ const BasicOptions = ({ className }: Props) => {
     {
       commandName: 'たたかう',
       onClick: () => {
+        context.updateBattleBarContent(undefined)
         context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
         context.updateActionCommand({ ...context.actionCommand, name: 'たたかう' })
       },
@@ -28,6 +29,7 @@ const BasicOptions = ({ className }: Props) => {
     {
       commandName: 'スキル',
       onClick: () => {
+        context.updateBattleBarContent(undefined)
         context.updateUIFocusStatus(UIFocusStatus.SKILLS)
         context.updateActionCommand({ ...context.actionCommand, name: 'スキル' })
       },
@@ -35,6 +37,7 @@ const BasicOptions = ({ className }: Props) => {
     {
       commandName: 'どうぐ',
       onClick: () => {
+        context.updateBattleBarContent(undefined)
         context.updateUIFocusStatus(UIFocusStatus.ITEM_LIST)
         context.updateActionCommand({ ...context.actionCommand, name: 'どうぐ' })
       },
@@ -42,8 +45,7 @@ const BasicOptions = ({ className }: Props) => {
     {
       commandName: 'にげる',
       onClick: () => {
-        context.updateUIFocusStatus(UIFocusStatus.ENEMY_INFO)
-        context.updateActionCommand({ ...context.actionCommand, name: 'にげる' })
+        context.updateBattleBarContent("にげられない！")
       },
     },
   ]
