@@ -49,6 +49,16 @@ const useGameContext = () => {
   const mainBGMRef = useRef<HTMLAudioElement>(null)
   const winBGMRef = useRef<HTMLAudioElement>(null)
 
+  useEffect(() => {
+    if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.4
+    if (selectSERef.current?.volume) selectSERef.current.volume = 0.8
+    if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.7
+
+    console.log("init draw...")
+    mainBGMRef.current?.play()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   /**
    * フィールドプレイヤ, エネミーの各プールから特定のオブジェクトを取得する
    */

@@ -13,13 +13,6 @@ const BattleField = ({ className }: Props) => {
   const context = useContext(Context)
   if (!context) throw new Error('BasicOptions context error')
 
-  useEffect(() => {
-    if (context.mainBGMRef.current?.volume) context.mainBGMRef.current.volume = 0.4
-    if (context.selectSERef.current?.volume) context.selectSERef.current.volume = 0.8
-    if (context.specialAttackSERef.current?.volume) context.specialAttackSERef.current.volume = 0.7
-
-    context.mainBGMRef.current?.play()
-  }, [])
 
   return (
     <div className={`${className} `}>
