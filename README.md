@@ -2,6 +2,11 @@
 ![Alt text](public/image.png)
 ※画面は開発中のものです
 
+## URL
+https://retro-rpg-social-game-client.vercel.app/battle
+
+※ 初回読み込みにお時間掛かる場合がございます
+
 ## 鋭意開発中
 現在、戦闘画面にあたる部分を実装完了した段階
 
