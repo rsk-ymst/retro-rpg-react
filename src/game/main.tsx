@@ -19,22 +19,25 @@ const FIELD_PLAYER_NUMBER = 4
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 const useGameContext = () => {
-  // データ受信し、ここで初期値設定
+  /* UIに関連する変数 */
   const [battleBarContent, setBattleBarContent] = useState<string | undefined>(undefined)
   const [battleState, setBattleState] = useState<BattleState>(BattleState.PlayerSelect)
   const [UIFocus, setUIFocus] = useState<UIFocusStatus>(UIFocusStatus.BASIC_OPTIONS)
 
+  /* フィールドオブジェクトに関連する変数 */
   const [currentFieldPlayerIndex, setCurrentFieldPlayerIndex] = useState<number>(0)
   const [fieldPlayers, setFieldPlayers] = useState<ActionCharacter[]>(testPlayerData)
   const [currentEnemyIndex, setCurrentEnemyIndex] = useState<number>(-1)
   const [enemies, setEnemies] = useState<ActionCharacter[]>(testEnemyData)
 
+  /* アクションコマンドに関連する変数 */
   const [actionCommand, setActionCommand] = useState<ActionCommand>(null)
   const [actionCommandQueue, setActionCommandQueue] = useState<ActionCommandQueue>([])
 
   const [items, setItems] = useState<Item[]>(testItems)
   const [isPlayingBGM, setIsPlayingBGM] = useState<boolean>(false)
 
+  /* 子コンポーネントでコンテキスト変数を更新するための関数 */
   const updateBattleState = (value: BattleState) => setBattleState(value)
   const updateUIFocusStatus = (value: UIFocusStatus) => setUIFocus(value)
   const updateActionCommand = (value: ActionCommand) => setActionCommand(value)
@@ -42,12 +45,14 @@ const useGameContext = () => {
   const updateIsPlayingBGM = (value: boolean) => setIsPlayingBGM(value)
   const updateBattleBarContent = (value?: string) => setBattleBarContent(value)
 
+  /* SE Ref */
   const selectSERef = useRef<HTMLAudioElement>(null)
   const normalAttackSERef = useRef<HTMLAudioElement>(null)
   const chargeSERef = useRef<HTMLAudioElement>(null)
   const specialAttackSERef = useRef<HTMLAudioElement>(null)
   const healingSERef = useRef<HTMLAudioElement>(null)
 
+  /* BGM Ref */
   const mainBGMRef = useRef<HTMLAudioElement>(null)
   const winBGMRef = useRef<HTMLAudioElement>(null)
 
@@ -75,6 +80,9 @@ const useGameContext = () => {
     }
   }
 
+  /**
+   * キャラクタの可変ステータスを更新する
+   */
   const updateCharacterStatus = (obj: ActionCharacterIdentifier, target: ActionCharacter) => {
     switch (obj.type) {
       case CharacterType.FieldPlayer: {
@@ -112,6 +120,9 @@ const useGameContext = () => {
     }
   }
 
+  /**
+   * フォーカスするキャラクタを設定する
+   */
   const setFocusCharacterIndex = (obj?: ActionCharacterIdentifier) => {
     if (!obj) throw new Error('Object')
 
@@ -164,9 +175,13 @@ const useGameContext = () => {
     )
   }
 
+  /**
+   * 生存しているフィールドプレイヤ数を取得
+   */
   const getAliveFieldPlayerCount = () => {
     return fieldPlayers.filter((e) => e.status.currentHitPoint > 0).length
   }
+
 
   const clearFieldPlayerCommand = () => {
     fieldPlayers.map((e) => {
@@ -176,6 +191,9 @@ const useGameContext = () => {
     setFieldPlayers(fieldPlayers)
   }
 
+  /**
+   * バトルトランザクション開始前に敵のコマンドを設定する
+   */
   const addEnemyCommand = () => {
     enemies.forEach((e, i) => {
       if (e.status.currentHitPoint <= 0) return
@@ -503,8 +521,6 @@ const useGameContext = () => {
     if (actionCommand?.target !== undefined) {
       actionCommandQueue.push(actionCommand)
       setActionCommandQueue(actionCommandQueue)
-
-      // console.log('pushed actionCommand', actionCommandQueue)
 
       // キャラクタ全員のコマンドが決定したら、stateを切り替える
       if (actionCommandQueue.length === getAliveFieldPlayerCount()) {
