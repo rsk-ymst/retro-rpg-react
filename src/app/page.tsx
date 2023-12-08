@@ -1,6 +1,14 @@
 import Image from 'next/image'
 
 export default function Home() {
+  const list = [
+    { name: 'ショップ', path: '/shop' },
+    { name: 'ガチャ', path: '/gacha' },
+    { name: 'クエスト', path: '/quest' },
+    { name: '編成', path: '/formation' },
+    { name: '施設', path: '/facility' },
+  ]
+
   return (
     <main className='flex flex-col items-center justify-between p-2'>
       <div className='z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex'>
@@ -31,21 +39,20 @@ export default function Home() {
       <div className='h-[370px]'>ほげ</div>
 
       <div className='mb-8 w-full grid text-center lg:grid-cols-5 h-20'>
-        <button className='group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
-          ショップ
-        </button>
-        <button className='group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
-          ガチャ
-        </button>{' '}
-        <button className='group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
-          クエスト
-        </button>{' '}
-        <button className='group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
-          編成
-          </button>{' '}
-        <button className='group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30'>
-          施設
-        </button>
+        {list.map((item, index) => {
+          const isLastItem = index === list.length - 1
+
+          return (
+            <button
+              key={index}
+              className={`group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 ${
+                isLastItem ? '' : 'mr-1'
+              }`}
+            >
+              {item.name}
+            </button>
+          )
+        })}
       </div>
     </main>
   )

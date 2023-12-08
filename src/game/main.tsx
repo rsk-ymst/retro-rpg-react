@@ -58,7 +58,7 @@ const useGameContext = () => {
 
   useEffect(() => {
     /* 音量調整 */
-    if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.2
+    if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.1
     if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.3
     if (selectSERef.current?.volume) selectSERef.current.volume = 0.4
     if (healingSERef.current?.volume) healingSERef.current.volume = 0.6
