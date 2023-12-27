@@ -1,4 +1,7 @@
+'use client'
+
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 
 export default function Home() {
   const list = [
@@ -8,6 +11,8 @@ export default function Home() {
     { name: '編成', path: '/formation' },
     { name: '施設', path: '/facility' },
   ]
+
+  const router = useRouter()
 
   return (
     <main className='flex flex-col items-center justify-between p-2'>
@@ -48,6 +53,7 @@ export default function Home() {
               className={`group rounded-lg border border-transparent px-5 py-4 h-[100px] bg-white transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30 ${
                 isLastItem ? '' : 'mr-1'
               }`}
+              onClick={() => router.push(item.path)}
             >
               {item.name}
             </button>
