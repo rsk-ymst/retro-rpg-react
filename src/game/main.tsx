@@ -60,7 +60,7 @@ const useGameContext = () => {
     /* 音量調整 */
     if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.1
     if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.3
-    if (selectSERef.current?.volume) selectSERef.current.volume = 0.4
+    if (selectSERef.current?.volume) selectSERef.current.volume = 0.3
     if (healingSERef.current?.volume) healingSERef.current.volume = 0.6
     if (chargeSERef.current?.volume) chargeSERef.current.volume = 0.8
     if (normalAttackSERef.current?.volume) normalAttackSERef.current.volume = 0.8
