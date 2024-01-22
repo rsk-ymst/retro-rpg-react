@@ -61,10 +61,10 @@ const useGameContext = () => {
     if (mainBGMRef.current?.volume) mainBGMRef.current.volume = 0.1
     if (winBGMRef.current?.volume) winBGMRef.current.volume = 0.3
     if (selectSERef.current?.volume) selectSERef.current.volume = 0.3
-    if (healingSERef.current?.volume) healingSERef.current.volume = 0.6
-    if (chargeSERef.current?.volume) chargeSERef.current.volume = 0.8
-    if (normalAttackSERef.current?.volume) normalAttackSERef.current.volume = 0.8
-    if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.5
+    if (healingSERef.current?.volume) healingSERef.current.volume = 0.4
+    if (chargeSERef.current?.volume) chargeSERef.current.volume = 0.6
+    if (normalAttackSERef.current?.volume) normalAttackSERef.current.volume = 0.6
+    if (specialAttackSERef.current?.volume) specialAttackSERef.current.volume = 0.3
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -416,10 +416,6 @@ const useGameContext = () => {
 
           await targetAction(executerIdentifier, targetIdentifier, command)
 
-          // const damage = command.command === 'たたかう' ? executerEntity.parameter.attack : 0
-          // targetEntity.status.currentHitPoint -= damage || 0
-          // targetEntity.status.onEffect = true
-
           if (isExtinctEnemies()) {
             await sleep(2000)
             setBattleState(BattleState.PlayerWin)
@@ -514,8 +510,6 @@ const useGameContext = () => {
     if (battleState == BattleState.ActionTransaction) return
     if (currentFieldPlayerIndex >= FIELD_PLAYER_NUMBER) return
     if (actionCommand == null) return
-
-    // console.log('update actionCommand', actionCommand)
 
     // ターゲット決定 => コマンド確定
     if (actionCommand?.target !== undefined) {
