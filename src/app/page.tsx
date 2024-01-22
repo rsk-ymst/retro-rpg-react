@@ -2,6 +2,8 @@
 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import CharacterCard from '@/components/CharacterCard'
+import { testPlayerData } from '@/game/player'
 
 export default function Home() {
   const list = [
@@ -41,7 +43,11 @@ export default function Home() {
         </div>
       </div>
 
-      <div className='h-[370px]'>ほげ</div>
+      <div className='flex'>
+        {testPlayerData.map((e, i) => {
+          return <CharacterCard key={i} character={e} imageUrl={''} className={''} />
+        })}
+      </div>
 
       <div className='mb-8 w-full grid text-center lg:grid-cols-5 h-20'>
         {list.map((item, index) => {

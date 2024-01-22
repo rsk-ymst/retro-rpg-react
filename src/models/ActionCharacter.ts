@@ -4,6 +4,7 @@ import { Skill } from './Skill'
 export type ActionCharacter = {
   type: 'Enemy' | 'FieldPlayer' // どのプレイヤーの操作か
   name: string
+  enName?: string
   drawState: ActionCharacterDrawState
   status: BattleVariableStatus
   parameter: CharacterParameter

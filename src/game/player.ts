@@ -5,6 +5,7 @@ import { SkillType } from '@/models/Skill'
 export const testPlayerData: ActionCharacter[] = [
   {
     name: 'フェリス',
+    enName: 'ferris',
     type: 'FieldPlayer',
     drawState: ActionCharacterDrawState.Normal,
     status: {
@@ -47,6 +48,7 @@ export const testPlayerData: ActionCharacter[] = [
 
   {
     name: 'ゴーファー',
+    enName: 'gopher',
     type: 'FieldPlayer',
     drawState: ActionCharacterDrawState.Normal,
     status: {
@@ -88,6 +90,7 @@ export const testPlayerData: ActionCharacter[] = [
   },
   {
     name: 'タックス',
+    enName: 'tux',
     type: 'FieldPlayer',
     drawState: ActionCharacterDrawState.Normal,
     status: {
@@ -122,6 +125,7 @@ export const testPlayerData: ActionCharacter[] = [
   },
   {
     name: 'ドロイド',
+    enName: 'droid',
     type: 'FieldPlayer',
     drawState: ActionCharacterDrawState.Normal,
     status: {
